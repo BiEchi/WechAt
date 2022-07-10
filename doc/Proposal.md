@@ -51,6 +51,15 @@ The DBML desgin above is the mother project for this course project. We want to 
 
 ![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-07-06-043506.png)
 
+| Part             | Front-end | Back-end         |
+| ---------------- | --------- | ---------------- |
+| Post/Productå    | Junyi     | Jack (Tentative) |
+| Snippet          | Jingyuan  | Zhongqi          |
+| Chat_session/Msg | Xiaoyi    | Jiayuan          |
+| Chat_user/Bottle | Jack      | Puyu, Zhongqi    |
+
+
+
 ### Per-entity description
 
 One **Chat_user** can have multiple **Msg** histories which belongs to his chat .One **Msg** history can only belong to one **Chat_user**
