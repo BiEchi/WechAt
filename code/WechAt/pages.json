@@ -1,9 +1,39 @@
 {
+	"tabBar": {
+		"color": "#d6d6d6",
+		"selectedColor": "#d6d6d6",
+		"borderStyle": "black",
+		"backgroundColor": "#f6f6f6",
+		"iconWidth":"50rpx",
+		"list": [{
+			"pagePath": "pages/tabbar/index",
+			"iconPath": "static/institution_icon.png",
+			"selectedIconPath": "static/institution_icon_chosen.png"
+		},
+		{
+			"pagePath": "pages/courses/courses",
+			"iconPath": "static/courses_icon.png",
+			"selectedIconPath": "static/courses_icon_chosen.png"
+		},
+		{
+			"pagePath": "pages/my/my",
+			"iconPath": "static/account_icon.png",
+			"selectedIconPath": "static/account_icon_chosen.png"
+		}],
+		"z-index":999
+	
+	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "Your Sessions"
+			}
+		},
+		{
+			"path": "pages/account/account",
+			"style": {
+				"navigationBarTitleText": "Your Accounts"
 			}
 		}
 	],
