@@ -1,29 +1,43 @@
+// Only Jack can modift the tabbar
 {
 	"tabBar": {
-		"color": "#d6d6d6",
-		"selectedColor": "#d6d6d6",
+		"color": "#7A7E83",
+		"selectedColor": "#ff5500",
 		"borderStyle": "black",
-		"backgroundColor": "#f6f6f6",
-		"iconWidth":"50rpx",
-		"list": [{
-			"pagePath": "pages/tabbar/index",
-			"iconPath": "static/institution_icon.png",
-			"selectedIconPath": "static/institution_icon_chosen.png"
-		},
-		{
-			"pagePath": "pages/courses/courses",
-			"iconPath": "static/courses_icon.png",
-			"selectedIconPath": "static/courses_icon_chosen.png"
-		},
-		{
-			"pagePath": "pages/my/my",
-			"iconPath": "static/account_icon.png",
-			"selectedIconPath": "static/account_icon_chosen.png"
-		}],
-		"z-index":999
-	
+		"backgroundColor": "#ffffff",
+		"list": [
+			// index page
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/logo.png",
+				"selectedIconPath": "static/logo.png",
+				"text": "Sessions"
+			},
+			// post square page
+			{
+				"pagePath": "pages/post/post",
+				"iconPath": "static/logo.png",
+				"selectedIconPath": "static/logo.png",
+				"text": "Posts"
+			},
+			// product square page
+			{
+				"pagePath": "pages/product/product",
+				"iconPath": "static/logo.png",
+				"selectedIconPath": "static/logo.png",
+				"text": "Products"
+			},
+			// account page
+			{
+				"pagePath": "pages/account/account",
+				"iconPath": "static/logo.png",
+				"selectedIconPath": "static/logo.png",
+				"text": "Account"
+			}
+		]
 	},
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	// every time after you add a page to the project, add it to here as well
+	"pages": [ //pages数组中第一项表示应用启动页
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -31,9 +45,21 @@
 			}
 		},
 		{
+			"path": "pages/post/post",
+			"style": {
+				"navigationBarTitleText": "Post Square"
+			}
+		},
+		{
+			"path": "pages/product/product",
+			"style": {
+				"navigationBarTitleText": "Products Square"
+			}
+		},
+		{
 			"path": "pages/account/account",
 			"style": {
-				"navigationBarTitleText": "Your Accounts"
+				"navigationBarTitleText": "Your Account"
 			}
 		}
 	],

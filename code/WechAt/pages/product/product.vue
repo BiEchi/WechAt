@@ -1,12 +1,9 @@
-<!-- This file is used for accounts, ... -->
-
 <template>
 	<view class="content">
 		<image class="logo" src="/static/logo.png"></image>
 		<view class="text-area">
 			<text class="title">{{title}}</text>
 		</view>
-		<view style="text-align: center;">{{oneSentence}}</view>
 	</view>
 </template>
 
@@ -14,14 +11,14 @@
 	export default {
 		data() {
 			return {
-				title: 'This is your account page!',
-				oneSentence:'Hi, this is your account page.'
+				title: 'WechAtB'
 			}
+		},
+		onLoad() {
+
 		},
 		methods: {
 
-		},
-		onLoad(){ 
 		}
 	}
 </script>
