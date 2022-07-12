@@ -49,11 +49,11 @@ These are the mother project tabs (without the “message” tab).
 
 The DBML desgin above is the mother project for this course project. We want to integrate our ****chatroom**** (the “message” tab) into the system, with several abstracted tables from the mother project:
 
-![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-07-06-043506.png)
+![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-07-12-030258.png)
 
 | Part             | Front-end | Back-end         |
 | ---------------- | --------- | ---------------- |
-| Post/Productå    | Junyi     | Jack (Tentative) |
+| Post/Product     | Junyi     | Jack (Tentative) |
 | Snippet          | Jingyuan  | Zhongqi          |
 | Chat_session/Msg | Xiaoyi    | Jiayuan          |
 | Chat_user/Bottle | Jack      | Puyu, Zhongqi    |
