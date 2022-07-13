@@ -47,9 +47,9 @@ These are the mother project tabs (without the “message” tab).
 
 ## Description
 
-The DBML desgin above is the mother project for this course project. We want to integrate our ****chatroom**** (the “message” tab) into the system, with several abstracted tables from the mother project:
+The DBML desgin above is the mother project for this course project. We want to integrate our **chatroom** (the “message” tab) into the system, with several abstracted tables from the mother project:
 
-![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-07-12-030258.png)
+![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-07-12-042926.png)
 
 | Part             | Front-end | Back-end         |
 | ---------------- | --------- | ---------------- |
