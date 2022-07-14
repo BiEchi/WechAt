@@ -472,5 +472,6 @@ WHERE   Msg.Msg_content LIKE  '%L%'
 
 We performed the performance analysis of the two queries and saw the indexed one with better performance. For the first query it improves by 1/4, while for the second query it improves by 1/5.
 
-The reason we chose them is 
+We add an index on Msg_content, and the new execution time will reduce by a quarter of the time it would have taken. Then we add a new index on User_name, and similarly, the new execution time will reduce by a quarter of the previous time. In conclusion, if we add indexes to the keys we use in the SQL queries, the execution time will be reduced.
+In our procedure, User_id and Mes_sender have already been set to indexes because they are either primary keys or foreign keys. It is better to keep these indexes (which may not be able to be deleted).
 
