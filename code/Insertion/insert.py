@@ -23,10 +23,10 @@ with open('msg.csv', 'w') as f:
 with open('post.csv', 'w') as f:
     pair_dict = {}
     pair_list = []
-    # number if from 501 to 1001
-    for i in range(501, 1001):
+    # number if from 1 to 1145
+    for i in range(1, 1046):
         # randomly pair i to a number j between 0 and 99
-        j = random.randint(1, 1146)
+        j = random.randint(0, 100)
         pair_dict[i] = j
         pair = str(i) + ',' + str(j) + '\n'
         # write the data to the CSV file

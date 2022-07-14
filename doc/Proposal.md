@@ -13,7 +13,7 @@ The chatroom system should bear basic functionalities including user login syste
 
 > Describe what data is stored in the database. (Where is the data from, what attributes and information would be stored?)
 
-![](./UML.png)
+![UML](UML.png)
 
 ## Dataset
 
