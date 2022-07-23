@@ -62,7 +62,7 @@
 				"navigationBarTitleText": "Your Account"
 			}
 		}
-	],
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

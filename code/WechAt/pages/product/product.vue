@@ -6,7 +6,7 @@
 		</view>
 	</view>
 </template>
-
+ 
 <script>
 	export default {
 		data() {
@@ -30,7 +30,7 @@
 		align-items: center;
 		justify-content: center;
 	}
-
+ 
 	.logo {
 		height: 200rpx;
 		width: 200rpx;

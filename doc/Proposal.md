@@ -53,7 +53,7 @@ The DBML desgin above is the mother project for this course project. We want to 
 
 | Part             | Front-end | Back-end         |
 | ---------------- | --------- | ---------------- |
-| Post/Product     | Junyi     | Jack (Tentative) |
+| Post/Product     | Junyi     | Jack             |
 | Snippet          | Jingyuan  | Zhongqi          |
 | Chat_session/Msg | Xiaoyi    | Jiayuan          |
 | Chat_user/Bottle | Jack      | Puyu, Zhongqi    |

@@ -1,14 +1,26 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
-		</view>
+		<item></item>
 	</view>
 </template>
 
 <script>
+	import item from 'components/item.vue'
+	
+	// call the cloud function to get the post data
+	uniCloud.callFunction({
+		name: 'query',
+		data: {
+			hi: 111,
+		},
+		success: res=>{
+			console.log(res['result'])
+		}
+	})
+  
+
 	export default {
+		name: 'Post',
 		data() {
 			return {
 				title: 'WechAtA'
@@ -17,13 +29,24 @@
 		onLoad() {
 
 		},
-		methods: {
+		methods: { 
 
-		}
-	}
+		}, 
+		components: { 
+			item
+		} 
+	}    
 </script>
 
 <style>
+	/* solid black line style */
+	.solidline {
+		width: 100%;
+		height: 2px;
+		background-color: #000;
+	}
+	
+	
 	.content {
 		display: flex;
 		flex-direction: column;
