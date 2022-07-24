@@ -31,6 +31,20 @@ exports.main = async (event, context) => {
 	//连接数据库
 	connection.connect()
 
+	switch (event.action) {
+		case 'get':
+			return get(event.id)
+		case 'add':
+			return add(event.data)
+		case 'update':
+			return update(event.id, event.data)
+		case 'delete':
+			return delete(event.id)
+	}
+
+	event.sqlsentence
+
+
 	// // 新增记录
 	// let addRes = await query('insert into users set ?', {
 	//   name: '丁元英',
