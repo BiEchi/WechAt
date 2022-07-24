@@ -27,46 +27,15 @@ const query = function(sql, values) {
 }
 
 exports.main = async (event, context) => {
-	
-	//连接数据库
-	connection.connect()
+	// connect to the database
+	connection.connect();
 
-	switch (event.action) {
-		case 'get':
-			return get(event.id)
-		case 'add':
-			return add(event.data)
-		case 'update':
-			return update(event.id, event.data)
-		case 'delete':
-			return delete(event.id)
-	}
+	// execute a query on the database
+	let res = await query(event.sentence, event.arguments); 
 
-	event.sqlsentence
-
-
-	// // 新增记录
-	// let addRes = await query('insert into users set ?', {
-	//   name: '丁元英',
-	//   age: 40
-	// })
-	// console.log("新增记录：", addRes)
-
-	// // 删除记录
-	// let delRes = await query('delete from users where name=? ', ['韩楚风'])
-	// console.log("删除记录：", delRes)
-
-	// //修改记录
-	// let updateRes = await query('update users set age=? where name=? ', [50, '丁元英'])
-	// console.log("修改记录：", updateRes)
-
-	//查询记录
-	let queryRes = await query('SELECT Post_id, Post_content FROM Post WHERE Post_id = ?', [1])
-	console.log("查询记录：", queryRes)
-
-	//关闭连接 
+	// close the connection
 	connection.end();
 
-	//返回数据给客户端 
-	return event
+	// return the result of the query to the caller of the function
+	return res;
 };

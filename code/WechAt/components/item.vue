@@ -17,14 +17,23 @@
 
 <script>
 	export default { 
+		name: "item",
+		props: {
+			title: {
+				type: String,
+				default: 'Default Title'
+			},
+			content: { 
+				type: String,
+				default: 'This is the default content'
+			}	
+		},
 		data() {
 			return {
-				title: 'Do you like titles?',
-				content: 'Hello, I am a Vue component -- I\'m text, actually. Note that I can last ACROSS lines'
+				
 			}
 		},
 		methods: {
-			
 		}
 	}
 </script>
