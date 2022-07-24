@@ -14,6 +14,7 @@
 			</form>
 			<button v-on:click="findBottle()" v-if="!discard_box_toggle" class="change_button">{{message_find}}</button> <!-- when you find a bottle, you can choose to discard or read -->
 			<button v-on:click="seeBottle()" v-if="discard_box_toggle" class="change_button">{{message_see}}</button>
+			<textarea id="w3review" name="w3review" rows="3" cols="40" v-if="open_box_toggle" v-model='Receive_content' readonly>{{Receive_content}}</textarea>
 			<button v-on:click="discardBottle()" v-if="discard_box_toggle" class="discard_button">{{message_discard}}</button>  <!-- if the bottle is discard, it will be delete in database -->
 		</div>
 		</view>
@@ -35,10 +36,14 @@
 				status:'',
 				discard_box_toggle: false,
 				message_box_toggle: false,
+				open_box_toggle: false,
 				send_confirm: false,
 				initial_status: 1,
 				today: '',
-				bottle_id: 0
+				bottle_id: 0,
+				my_user_id: 1,
+				Receive_content: '',
+				other_user_id: 1
 			}
 		},
 		methods: {
@@ -83,7 +88,7 @@
 			// this method is to change another random bottle
 			
 			
-			
+	//-------------------------------------------------------------------------------------------------------------------		
 			
 			findBottle(){
 				console.log('find bottle'),
@@ -97,6 +102,7 @@
 						},
 						success: res => {
 							console.log(res.result[0]['Bottle_id'])
+							this.bottle_id = res.result[0]['Bottle_id']
 						},					
 						fail: err=>{
 							console.log(err)
@@ -104,34 +110,41 @@
 				})
 			},
 			
-			replyToBottle(){
-			// bottle status change to read
-				console.log('reply the bottle message'),
-				
-			// read the random bottle
-				// SELECT column FROM table
-				// ORDER BY RAND()
-				// LIMIT 1
-				
-			// input message
-				this.send_content = "I am replying a message";
-				
-				if (this.send_confirm == true){
-				// reply to messgage, this become a private chat
-				
-				// create a private chat session
-				}
-				
-				
-			},
+	//--------------------------------------------------------------------------------------------------------------------
 			seeBottle(){
 				console.log('open the bottle'),
 				this.discard_box_toggle = true
+				this.my_user_id = getApp().globalData.user_id
+				this.open_box_toggle = !this.open_box_toggle
 				
-			// read the random bottle
-				// SELECT column FROM table
-				// ORDER BY RAND()
-				// LIMIT 1
+				uniCloud.callFunction({
+						name: 'query',
+						data: {
+							sentence: "UPDATE Bottle SET User_id_to = ? WHERE Bottle_id = ?",
+							arguments: [this.my_user_id, this.bottle_id]
+						},
+						success: res => {
+							console.log('Success update')
+						},					
+						fail: err=>{
+							console.log(err)
+						}
+				})
+				
+				uniCloud.callFunction({
+						name: 'query',
+						data: {
+							sentence: "SELECT Bottle_id, Bottle_time, User_id_from, Bottle_content FROM Bottle WHERE Bottle_id = ?",
+							arguments: [this.bottle_id]
+						},
+						success: res => {
+							console.log(res.result[0]['Bottle_content'])
+							this.Receive_content = res.result[0]['Bottle_content']
+						},					
+						fail: err=>{
+							console.log(err)
+						}
+				})
 			},
 			
 			discardBottle(){
