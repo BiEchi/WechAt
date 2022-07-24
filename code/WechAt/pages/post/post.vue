@@ -33,12 +33,12 @@
 					}, 
 					success: res=>{ 
 						// update the post content list
-						this.items = res.result
-					},
-					fail: err=>{ 
+						this.items = res.result 
+					}, 
+					fail: err=>{  
 						// jsonfy the error message
 						console.log(JSON.stringify(err))
-					}
+					} 
 		        })
 			},
 		},
@@ -95,7 +95,7 @@
 		margin-top: 200rpx;
 		margin-left: auto;
 		margin-right: auto;
-		margin-bottom: 50rpx;
+		margin-bottom: 50rpx; 
 	}
 
 	.text-area {

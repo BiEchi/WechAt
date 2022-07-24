@@ -70,7 +70,7 @@
 		</div>
 
 	</view>
-
+ 
 </template>
 
 <script>
