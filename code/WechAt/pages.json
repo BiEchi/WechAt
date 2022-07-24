@@ -34,11 +34,12 @@
 				"selectedIconPath": "static/logo.png",
 				"text": "Account"
 			},
+			// message page
 			{
-				"pagePath": "pages/bottle/bottle",
+				"pagePath": "pages/message/message",
 				"iconPath": "static/logo.png",
 				"selectedIconPath": "static/logo.png",
-				"text": "Drift Bottle"
+				"text": "Message"
 			}
 		]
 	},
@@ -57,6 +58,12 @@
 			}
 		},
 		{
+			"path": "pages/message/message",
+			"style": {
+				"navigationBarTitleText": "Your Message"
+			}
+		},
+		{
 			"path": "pages/product/product",
 			"style": {
 				"navigationBarTitleText": "Products Square"
@@ -67,31 +74,6 @@
 			"style": {
 				"navigationBarTitleText": "Your Account"
 			}
-		}
-        ,{
-            "path" : "pages/Login/Login",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "Login"
-            }
-            
-        }
-        ,{
-            "path" : "pages/Register/Register",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        },
-		{
-		    "path" : "pages/bottle/bottle",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "Bottle"
-		    }
-		    
 		}
     ],
 	"globalStyle": {
