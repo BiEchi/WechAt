@@ -41,6 +41,12 @@
 				"iconPath": "static/logo.png",
 				"selectedIconPath": "static/logo.png",
 				"text": "Message"
+			},
+			{
+				"pagePath": "pages/bottle/bottle",
+				"iconPath": "static/logo.png",
+				"selectedIconPath": "static/logo.png",
+				"text": "Drift Bottle"
 			}
 		]
 	},
@@ -48,6 +54,18 @@
 	"pages": [ //pages数组中第一项表示应用启动页
 		{
 			"path": "pages/Login/Login",
+			"style": {
+				"navigationBarTitleText": "Login"
+			}
+		},
+		{
+			"path": "pages/Register/Register",
+			"style": {
+				"navigationBarTitleText": "Login"
+			}
+		},
+		{
+			"path": "pages/bottle/bottle",
 			"style": {
 				"navigationBarTitleText": "Login"
 			}
