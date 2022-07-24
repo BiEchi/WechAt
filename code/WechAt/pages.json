@@ -33,6 +33,12 @@
 				"iconPath": "static/logo.png",
 				"selectedIconPath": "static/logo.png",
 				"text": "Account"
+			},
+			{
+				"pagePath": "pages/bottle/bottle",
+				"iconPath": "static/logo.png",
+				"selectedIconPath": "static/logo.png",
+				"text": "Drift Bottle"
 			}
 		]
 	},
@@ -61,6 +67,31 @@
 			"style": {
 				"navigationBarTitleText": "Your Account"
 			}
+		}
+        ,{
+            "path" : "pages/Login/Login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "Login"
+            }
+            
+        }
+        ,{
+            "path" : "pages/Register/Register",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/bottle/bottle",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "Bottle"
+		    }
+		    
 		}
     ],
 	"globalStyle": {
