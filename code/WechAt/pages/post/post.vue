@@ -1,65 +1,67 @@
 <template>
 	<view class="content">
-		<item :title="title" :content="content"></item>
-		<!-- capture user input -->
-		<view>
-			<view> input lowerbound: </view>
-			<input type="text" :value='user_input' @input="user_input = $event.target.value" />
-			<view> your lowerbound is set to: </view>
-			<view> {{user_input}} </view>
-		</view> 
-		<!-- button to submit user_input -->
-		<button class="btn" @click="submit">submit</button>
+		<!-- make a list of the contents using v-for and content_list -->
+		<view v-for="item in items" :key="item['Post_id']">
+			<postItem :content="item['Post_content']" :poster="item['Post_sender']" :time="item['Publish_time']"></postItem>
+		</view>
 	</view>
 </template>
 
 <script>
-	import item from '@/components/item.vue'
+	import postItem from '@/components/postItem.vue'
 	
-	// call the cloud function to get the post data
-	var post_content = 'This is my Default Content!' 
+	// from App.vue
+	var user_id = 2
 
-	export default {
+	export default { 
 		data() {
-			return { 
-				title: 'New Title',
-				content: post_content,
-				user_input: 0,
+			return {
+				items: []
 			}
 		},
 		onLoad() {
- 
+			this.getPost()
 		},
-		methods: { 
+		methods: {  
 			// function for submitting the user input 
-			submit() {
+			getPost() {
 				uniCloud.callFunction({
 					name: 'query',
-					data: {
-						sentence: 'SELECT * FROM Post WHERE Post_id <= ? AND Post_id >= ?',
-						arguments: [10, this.user_input]
+					data: { 
+						sentence: 'SELECT * FROM Post WHERE Post_id = ? OR Post_id = ? OR Post_id = ?',
+						arguments: [3, 6, 9]
 					}, 
 					success: res=>{ 
-						// output the length of the result
-						console.log(res.result.length)
-						// get the post_content in res
-						post_content = res.result[0]["Post_content"]
-						post_id = res.result[0]["Post_id"]
+						// update the post content list
+						this.items = res.result
 					},
-					fail: err=>{
-						console.log(this.user_input)
-						console.log(err)
+					fail: err=>{ 
+						// jsonfy the error message
+						console.log(JSON.stringify(err))
 					}
 		        })
-			}
-		}, 
+			},
+		},
 		components: { 
-			item
+			postItem
 		} 
 	}    
 </script>
 
 <style>
+	/* make a post id */
+	.postid {
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: #fff;
+		text-align: center;
+		font-size: 20px;
+		color: #000;
+	}
+
 	/* make a small button */
 	.btn {
 		width: 100px;

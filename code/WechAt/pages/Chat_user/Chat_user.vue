@@ -20,7 +20,7 @@
 				<p class="chatting">{{chat2}}</p>
 			</div>
 		</div>
-		</div>
+		</div> 
 		<div class="flex-container">
 			<div class="card">
 			  <img class="profile" src="/static/logo.png" alt="img1">
@@ -28,7 +28,7 @@
 			<div class="texting">
 				<h4 class="name"><b>{{name3}}</b></h4>
 				<p class="chatting">{{chat3}}</p>
-			</div>
+			</div> 
 		</div>
 		</div>
 		<div class="flex-container">
