@@ -31,14 +31,14 @@
 				message_find: 'Find Bottle',
 				message_see: 'Open Bottle',
 				message_discard: 'Discard Message',
-				my_user_id: 0,
 				send_default:'Hi, how are you (edit your message here)',
 				status:'',
 				discard_box_toggle: false,
 				message_box_toggle: false,
 				send_confirm: false,
 				initial_status: 1,
-				today: ''
+				today: '',
+				bottle_id: 0
 			}
 		},
 		methods: {
@@ -92,11 +92,11 @@
 				uniCloud.callFunction({
 						name: 'query',
 						data: {
-							sentence: "SELECT Bottle_id FROM Bottle WHERE Status = ?",
+							sentence: "SELECT Bottle_id FROM Bottle WHERE Status = ? ORDER BY RAND() LIMIT 1",
 							arguments: [1]
 						},
 						success: res => {
-							console.log(res)
+							console.log(res.result[0]['Bottle_id'])
 						},					
 						fail: err=>{
 							console.log(err)

@@ -5,7 +5,8 @@
 	export default {
 		
 		globalData: {
-			user_email: ''
+			user_email: '',
+			user_id: 0
 		},
 		onLaunch: function() {
 			console.log('App Launch') 

@@ -79,7 +79,8 @@
 			return {
 				title: "Login (登录)",
 				email: '',
-				passwords: ''
+				passwords: '',
+				user_id: 0
 			}
 		},
 		methods: {
@@ -94,14 +95,16 @@
 					},
 
 					success: res => {
-						console.log('kill me')
-						console.log(res.result[0]['User_password'])
+						// console.log('kill me')
+						// console.log(res.result[0]['User_id'], res.result[0]['User_name'])
 						if (this.passwords!=res.result[0]['User_password']){//!!not sure
 							this.register()
 						}
 						else {
-							console.log(getApp().globalData.user_email)
-							getApp().globalData.text = this.email
+							this.user_id = res.result[0]['User_id']
+							getApp().globalData.user_email = this.email
+							getApp().globalData.user_id = this.user_id 
+							console.log(getApp().globalData.user_id)
 							this.$router.push('/pages/account/account')
 						}
 						
