@@ -14,7 +14,7 @@
 		<view class="time">
 			<text>{{time}}</text>
 		</view>
- 
+
 		<!-- line for dividing the title and the content -->
 		<view class="line"></view> 
 	</view>
