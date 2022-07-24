@@ -3,7 +3,7 @@
 	<view class="content">
     <div>
 		 <h1> {{title}} </h1>
-         <input type="text"  placeholder="please input Username">
+         <input type="text"  placeholder="please input email">
          <input type="password" placeholder="please input Passwords">
 		 <div class="login-button" @click="login" type="submit">Login</div>
 	</div>
@@ -15,14 +15,14 @@
         data() {
             return {
 				title: 'Login (登录)',
-                username: '',
+                email: '',
                 password: ''
             }
         },
         methods: {
             login() {
                 console.log('submitted')
-				console.log(this.username)
+				console.log(this.email)
 				console.log(this.password)
             }
         }
@@ -63,7 +63,7 @@
 
 		<div>
 			 <h1> {{title}} </h1>
-		     <input type="text" v-model='username' placeholder="please input E-mail">
+		     <input type="text" v-model='email' placeholder="please input E-mail">
 		     <input type="password" v-model='passwords' placeholder="please input Passwords">
 			 <button class="login-button" @click="login" type="submit">Login</button>
 			 <button class="reg-button" @click="register" type="submit">register</button>
@@ -78,31 +78,38 @@
 		data() {
 			return {
 				title: "Login (登录)",
-				username: '',
+				email: '',
 				passwords: ''
 			}
 		},
 		methods: {
 			login() {
-				// console.log(this.username,  this.passwords)
+				// console.log(this.email,  this.passwords)
 				uniCloud.callFunction({
 					name: 'query',
 					data: {
-						sentence: 'SELECT * FROM Chat_user WHERE E_mail = ?',
-						//forget !!!E_mail? EMAIL?
-						arguments: [this.username]
+						sentence: 'SELECT * FROM Chat_user WHERE Email = ?',
+						//forget !!!E_mail? EMAIL? Email
+						arguments: [this.email]
 					},
 
-success: res => {
+					success: res => {
+						console.log('kill me')
 						console.log(res.result[0]['User_password'])
 						if (this.passwords!=res.result[0]['User_password']){//!!not sure
 							this.register()
+						}
+						else {
+							console.log(getApp().globalData.user_email)
+							getApp().globalData.text = this.email
+							this.$router.push('/pages/account/account')
 						}
 						
 						
 					},					
 					fail: err=>{
-						console.log(this.username, this.passwords)
+						console.log(getApp().globalData.user_email) // 'test'
+						console.log(this.email, this.passwords)
 						console.log(err)
 					}
 				})
@@ -110,7 +117,7 @@ success: res => {
 		
 			register(){
 				 //直接跳转
-				 console.log(this.username, this.passwords)
+				 console.log(this.email, this.passwords)
 				 this.$router.push('/pages/register/register')
 				
 				

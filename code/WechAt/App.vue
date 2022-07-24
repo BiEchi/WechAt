@@ -1,8 +1,12 @@
 <script>
 	// common components
-       
+	   
 	// export settings
 	export default {
+		
+		globalData: {
+			user_email: ''
+		},
 		onLaunch: function() {
 			console.log('App Launch') 
 		},
