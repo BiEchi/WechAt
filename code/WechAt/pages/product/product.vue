@@ -8,6 +8,24 @@
 </template>
  
 <script>
+	uniCloud.callFunction({
+		name: 'query',
+		data: {
+			sentence: 'SELECT * FROM Post WHERE Post_id = ? OR Post_id = ? OR Post_id = ?',
+			arguments: [3, 5, 7]
+		},  
+		success: res=>{
+			// output the length of the result
+			console.log('The returned result is', res.result[0]) 
+			// update the post content
+			this.content = res.result[0]['Post_content'] 
+			this.post_id_vue = res.result[0]["Post_id"]
+		},
+		fail: err=>{
+			console.log(err)
+		}
+	})
+	
 	export default {
 		data() {
 			return {
