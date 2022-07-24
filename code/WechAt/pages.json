@@ -46,7 +46,7 @@
 				"pagePath": "pages/bottle/bottle",
 				"iconPath": "static/logo.png",
 				"selectedIconPath": "static/logo.png",
-				"text": "Drift Bottle"
+				"text": "Bottle"
 			}
 		]
 	},
@@ -60,12 +60,6 @@
 		},
 		{
 			"path": "pages/Register/Register",
-			"style": {
-				"navigationBarTitleText": "Login"
-			}
-		},
-		{
-			"path": "pages/bottle/bottle",
 			"style": {
 				"navigationBarTitleText": "Login"
 			}
@@ -103,7 +97,7 @@
 		{
 			"path": "pages/bottle/bottle",
 			"style": {
-				"navigationBarTitleText": "Bottle"
+				"navigationBarTitleText": "Drift Bottle"
 			}
 		}
     ],
