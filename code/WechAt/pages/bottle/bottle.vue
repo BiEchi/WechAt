@@ -139,7 +139,22 @@
 						},
 						success: res => {
 							console.log(res.result[0]['Bottle_content'])
+							this.other_user_id = res.result[0]['User_id_from']
 							this.Receive_content = res.result[0]['Bottle_content']
+						},					
+						fail: err=>{
+							console.log(err)
+						}
+				})
+				
+				uniCloud.callFunction({
+						name: 'query',
+						data: {
+							sentence: "SELECT User_name FROM Chat_user WHERE User_id = ?",
+							arguments: [this.other_user_id]
+						},
+						success: res => {
+							this.Receive_content = this.Receive_content + '\n\n\n\t\t ------ ' + res.result[0]['User_name']
 						},					
 						fail: err=>{
 							console.log(err)
@@ -151,6 +166,7 @@
 				// if you discard the box, that means the message is not read, database not update
 				console.log('discard the bottle'),
 				this.discard_box_toggle = false
+				this.open_box_toggle = false
 			}
 		}
 	}
