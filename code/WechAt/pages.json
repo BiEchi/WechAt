@@ -7,6 +7,7 @@
 		"backgroundColor": "#ffffff",
 		"list": [
 			// index page
+			// index pages
 			{
 				"pagePath": "pages/index/index",
 				"iconPath": "static/logo.png",
@@ -46,6 +47,12 @@
 	// every time after you add a page to the project, add it to here as well
 	"pages": [ //pages数组中第一项表示应用启动页
 		{
+			"path": "pages/Login/Login",
+			"style": {
+				"navigationBarTitleText": "Login"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "Your Sessions"
@@ -73,6 +80,12 @@
 			"path": "pages/account/account",
 			"style": {
 				"navigationBarTitleText": "Your Account"
+			}
+		},
+		{
+			"path": "pages/bottle/bottle",
+			"style": {
+				"navigationBarTitleText": "Bottle"
 			}
 		}
     ],
