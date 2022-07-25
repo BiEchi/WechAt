@@ -30,7 +30,7 @@
 				</div>
 				<div class="texting">
 					<h4 class="name"><b>Friend Name</b></h4>
-					<p class="chatting">First message TBD.</p>
+					<p class="chatting">First message</p>
 				</div>
 			</div>
 		</view>

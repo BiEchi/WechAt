@@ -11,7 +11,7 @@
 				"pagePath": "pages/Chat_session/chat",
 				"iconPath": "static/logo.png",
 				"selectedIconPath": "static/logo.png",
-				"text": "Posts"
+				"text": "Sessions"
 			},
 			// post square page
 			{
