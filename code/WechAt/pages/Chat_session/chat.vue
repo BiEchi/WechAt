@@ -61,6 +61,7 @@
 				pub_msgs: [],
 				pri_msgs: [],
 				pri_msgs2: [],
+				my_user_id: 1
 			} 
 		},
 		onLoad() {
