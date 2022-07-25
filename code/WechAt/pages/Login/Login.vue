@@ -108,8 +108,6 @@
 							console.log(getApp().globalData.user_id)
 							this.$router.push('/pages/account/account')
 						}
-						
-						
 					},					
 					fail: err=>{
 						console.log(getApp().globalData.user_email) // 'test'

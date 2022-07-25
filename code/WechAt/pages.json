@@ -113,7 +113,15 @@
                 "navigationBarTitleText": "Delete Account"
             }
             
-        }
+        },
+		{
+		    "path" : "pages/Chat_session/chat",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "WecHat"
+		    }
+		    
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
