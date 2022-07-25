@@ -44,6 +44,7 @@
 					success: res=>{ 
 						// update the post content list
 						this.items = res.result 
+						console.log(res.result)
 					}, 
 					fail: err=>{  
 						// jsonfy the error message

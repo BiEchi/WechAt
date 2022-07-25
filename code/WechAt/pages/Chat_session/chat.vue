@@ -50,6 +50,9 @@
 </template>
 
 <script>
+
+	var my_user_id = getApp().globalData.user_id
+
 	export default {
 		data() {
 			return {
@@ -72,8 +75,6 @@
 				// should jump to clicked message
 			}, 
 			start_getting_session() {
-				this.my_user_id = getApp().globalData.user_id
-				console.log("my id is: " + this.my_user_id)
 				
 				uniCloud.callFunction({
 					name: 'query',
