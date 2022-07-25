@@ -43,7 +43,10 @@
 				bottle_id: 0,
 				my_user_id: 1,
 				Receive_content: '',
-				other_user_id: 1
+				other_user_id: 1,
+				other_user_name: '',
+				already_open: false,
+				receive_time: ''
 			}
 		},
 		methods: {
@@ -93,6 +96,7 @@
 			findBottle(){
 				console.log('find bottle'),
 				this.discard_box_toggle = true
+				this.already_open = false
 		
 				uniCloud.callFunction({
 						name: 'query',
@@ -116,6 +120,7 @@
 				this.discard_box_toggle = true
 				this.my_user_id = getApp().globalData.user_id
 				this.open_box_toggle = !this.open_box_toggle
+				this.already_open = true
 				
 				uniCloud.callFunction({
 						name: 'query',
@@ -138,23 +143,26 @@
 							arguments: [this.bottle_id]
 						},
 						success: res => {
-							console.log(res.result[0]['Bottle_content'])
+							console.log(res.result[0])
 							this.other_user_id = res.result[0]['User_id_from']
 							this.Receive_content = res.result[0]['Bottle_content']
-						},					
-						fail: err=>{
-							console.log(err)
-						}
-				})
-				
-				uniCloud.callFunction({
-						name: 'query',
-						data: {
-							sentence: "SELECT User_name FROM Chat_user WHERE User_id = ?",
-							arguments: [this.other_user_id]
-						},
-						success: res => {
-							this.Receive_content = this.Receive_content + '\n\n\n\t\t ------ ' + res.result[0]['User_name']
+							
+							uniCloud.callFunction({
+									name: 'query',
+									data: {
+										sentence: "SELECT User_name FROM Chat_user WHERE User_id = ?",
+										arguments: [this.other_user_id]
+									},
+									success: res => {
+										this.other_user_name = res.result[0]['User_name']
+										console.log("other's name is: " + res.result[0]['User_name'] + " other's id is: " + this.other_user_id)
+										this.Receive_content = this.Receive_content + '\n\n\n\t\t ------ ' + res.result[0]['User_name']
+									},					
+									fail: err=>{
+										console.log(err)
+									}
+							})
+							
 						},					
 						fail: err=>{
 							console.log(err)
@@ -167,6 +175,21 @@
 				console.log('discard the bottle'),
 				this.discard_box_toggle = false
 				this.open_box_toggle = false
+				if(this.already_open = true) {
+					uniCloud.callFunction({
+							name: 'query',
+							data: {
+								sentence: "DELETE FROM Bottle WHERE Bottle_id = ?",
+								arguments: [this.bottle_id]
+							},
+							success: res => {
+								console.log("success: read but discard the bottle")
+							},					
+							fail: err=>{
+								console.log(err)
+							}
+					})
+				}
 			}
 		}
 	}

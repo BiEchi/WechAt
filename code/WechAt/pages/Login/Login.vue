@@ -67,6 +67,7 @@
 		     <input type="password" v-model='passwords' placeholder="please input Passwords">
 			 <button class="login-button" @click="login" type="submit">Login</button>
 			 <button class="reg-button" @click="register" type="submit">register</button>
+<!-- 			 <button class="del-button" @click="delete_account" type="submit">Delete</button> -->
 		</div>
 
 	</view>
@@ -124,6 +125,10 @@
 				 this.$router.push('/pages/register/register')
 				
 				
+			},
+			
+			delete_account(){
+				this.$router.push('/pages/delete/delete')
 			}
 		
 			
