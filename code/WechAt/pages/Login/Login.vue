@@ -122,18 +122,15 @@
 			register(){
 				 //直接跳转
 				 console.log(this.email, this.passwords)
-<<<<<<< HEAD
 				 this.$router.push('/pages/register/register')
 				
 				
-			},
-			
-			delete_account(){
-				this.$router.push('/pages/delete/delete')
-=======
-				 this.$router.push('/pages/register/register')	
->>>>>>> f0d082b3b9b088ce935b56bfce568129742c8aa5
 			}
+			
+			// delete_account(){
+			// 	this.$router.push('/pages/delete/delete')
+			// 	 this.$router.push('/pages/register/register')	
+			// }
 		}
 	}
 </script>
