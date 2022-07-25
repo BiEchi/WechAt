@@ -7,12 +7,11 @@
 		"backgroundColor": "#ffffff",
 		"list": [
 			// index page
-			// index pages
 			{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/Chat_session/chat",
 				"iconPath": "static/logo.png",
 				"selectedIconPath": "static/logo.png",
-				"text": "Sessions"
+				"text": "Posts"
 			},
 			// post square page
 			{
@@ -52,10 +51,11 @@
 			}
 		},
 		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "Your Sessions"
-			}
+		    "path" : "pages/Chat_session/chat",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "WeChat"
+		    }
 		},
 		{
 			"path": "pages/post/post",
@@ -106,15 +106,7 @@
                 "navigationBarTitleText": "Delete Account"
             }
             
-        },
-		{
-		    "path" : "pages/Chat_session/chat",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "WecHat"
-		    }
-		    
-		}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
