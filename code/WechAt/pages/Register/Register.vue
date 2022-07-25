@@ -51,13 +51,15 @@
 				uniCloud.callFunction({
 					name: 'query',
 					data: {
-						sentence: 'Insert Into Chat_user ( User_name, User_password, Avator, Email) Values ( ?, ?, ?, ? );',
+						sentence: 'Insert Into Chat_user ( User_name, User_password, Avator, Email) Values ( ?, ?, ?, ? )',
 						arguments: [this.username, this.passwords, this.avator, this.email]
 					},
 					success: res => {
 						console.log(res.result[0])
+						this.$router.push('/pages/Login/Login')
 					},					
 					fail: err=>{
+						console.log(this.username, this.passwords, this.avator, this.email)
 						console.log(err)
 					}
 				})
