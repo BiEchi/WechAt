@@ -34,17 +34,6 @@
 				</div>
 			</div>
 		</view>
-		<view v-for="pri_session2 in pri_sessions2" :key="pri_session2['Session_pri_id']">
-			<div class="flex-container">
-				<div class="card">
-				<img class="profile" src="/static/logo.png" alt="img1">
-				</div>
-				<div class="texting">
-					<h4 class="name"><b>{{pri_session2['User_name']}}</b></h4>
-					<p class="chatting">{{pri_msg}}</p>
-				</div>
-			</div>
-		</view>
 	</view>
 
 </template>
@@ -58,7 +47,6 @@
 			return {
 				pub_sessions: [],
 				pri_sessions: [],
-				pri_sessions2: [],
 				pub_msg: 'Hello',
 				pri_msg: 'Hello',
 				pub_msgs: [],
@@ -93,11 +81,12 @@
 					}
 				})
 				
+				// this query 
 				uniCloud.callFunction({
 					name: 'query',
 					data: {
-						sentence: 'SELECT * FROM Joined_pri JOIN Chat_user ON User2_id = User_id WHERE User1_id = ? ',
-						arguments: [this.my_user_id]
+						sentence: '(SELECT * FROM Joined_pri JOIN Chat_user ON Joined_pri.User2_id = Chat_user.User_id WHERE User1_id = ?) UNION (SELECT * FROM Joined_pri JOIN Chat_user ON Joined_pri.User1_id = Chat_user.User_id WHERE User2_id = ?)',
+						arguments: [this.my_user_id, this.my_user_id]
 					},
 					success: res => {
 						this.pri_sessions = res.result
@@ -107,27 +96,8 @@
 						console.log(err)
 					}
 				})
-				
-				uniCloud.callFunction({
-					name: 'query',
-					data: {
-						sentence: 'SELECT * FROM Joined_pri JOIN Chat_user ON User1_id = User_id WHERE User2_id = ?',
-						arguments: [this.my_user_id]
-					},
-					success: res => {
-						this.pri_sessions2 = res.result
-						console.log('kill me in uniCloud success 3')
-					},					
-					fail: err=>{
-						console.log(err)
-					}
-				})
 			},
 			start_getting_msg(){
-				this.my_user_id = getApp().globalData.user_id
-				console.log("my id is: " + this.my_user_id)
-				
-				
 				uniCloud.callFunction({
 					name: 'query',
 					data: {
@@ -144,35 +114,35 @@
 					}
 				})
 				   
-				// uniCloud.callFunction({
-				// 	name: 'query',
-				// 	data: {
-				// 		sentence: 'SELECT * FROM Joined_pri JOIN Chat_user ON User2_id = User_id WHERE User1_id = ? ',
-				// 		arguments: [this.my_user_id]
-				// 	},
-				// 	success: res => {
-				// 		this.pri_msgs = res.result
-				// 		console.log('kill me in uniCloud success 22')
-				// 	},					
-				// 	fail: err=>{
-				// 		console.log(err)
-				// 	}
-				// })
+				uniCloud.callFunction({
+					name: 'query',
+					data: {
+						sentence: 'SELECT * FROM Joined_pri JOIN Chat_user ON User2_id = User_id WHERE User1_id = ? ',
+						arguments: [this.my_user_id]
+					},
+					success: res => {
+						this.pri_msgs = res.result
+						console.log('kill me in uniCloud success 22')
+					},					
+					fail: err=>{
+						console.log(err)
+					}
+				})
 				
-				// uniCloud.callFunction({
-				// 	name: 'query',
-				// 	data: {
-				// 		sentence: 'SELECT * FROM Joined_pri JOIN Chat_user ON User1_id = User_id WHERE User2_id = ?',
-				// 		arguments: [this.my_user_id]
-				// 	},
-				// 	success: res => {
-				// 		this.pri_msgs2 = res.result
-				// 		console.log('kill me in uniCloud success 33')
-				// 	},					
-				// 	fail: err=>{
-				// 		console.log(err)
-				// 	}
-				// })
+				uniCloud.callFunction({
+					name: 'query',
+					data: {
+						sentence: 'SELECT * FROM Joined_pri JOIN Chat_user ON User1_id = User_id WHERE User2_id = ?',
+						arguments: [this.my_user_id]
+					},
+					success: res => {
+						this.pri_msgs2 = res.result
+						console.log('kill me in uniCloud success 33')
+					},					
+					fail: err=>{
+						console.log(err)
+					}
+				})
 			}
 		}
 	}
