@@ -1,66 +1,146 @@
-<!-- This file is used for accounts, ... -->
+
 
 <template>
-	<view class="content">
-		<image class="logo" src="/static/avtor.png"></image>
-		<scroll-view class="chat" scroll-y="true" scroll-with-animation="true">
-			<view class="chat-ls msg-left">
-				<view class="chat-time1">{{title}}
-					<view class="background1">
-						<view class="chat1">{{oneSentence}}</view>
-					</view>
-				</view>
-			</view>
-			<view class="chat-ls msg-right">
-				<view class="chat-time2">Your name 07/24/2022 11:53
-					<view class="background2">
-						<view class="chat2">Wow!Thank you~</view>
-					</view>
-				</view>
-			</view>
-			<view class="chat-ls msg-right">
-				<view class="chat-time2">Your name 07/24/2022 11:53
-					<view class="background2">
-						<view class="chat2">Would you like to but it?</view>
-					</view>
-				</view>
-			</view>
-			<view class="chat-ls msg-left">
-				<view class="chat-time1">{{title}}
-					<view class="background1">
-						<view class="chat1">Yep!</view>
-					</view>
-				</view>
-			</view> 
-		</scroll-view>
-		<view class="chat-main">
-		<submit></submit>
-		</view>
-	</view>
+  <van-row class="an-btm">
+  <van-col span="24" v-bind:key="item" v-for="item in arr">
+   <div v-if="item.is_user">
+   <view class="chat-ls msg-left">
+    <view class="chat-time1">{{ item.Msg_sender }}  {{ item.Msg_time }}
+     <view class="background1">
+      <view class="chat1">{{item.Msg_content}}</view>
+     </view>
+    </view>
+   </view>
+   </div>
+   <div v-else>
+   <view class="chat-ls msg-right">
+    
+    <view class="chat-time1">{{ item.Msg_sender }}  {{ item.Msg_time }}
+     <view class="background1">
+      <view class="chat1">{{item.Msg_content}}</view>
+     </view>
+    </view>
+   </view>
+ </div>
+  </van-col>
+  </van-row>
+
 </template>
+<!-- <div>
+  <div v-if="show1">111111111111</div>
+  <div v-else>22222222</div>
+ </div>
+</template>
+<script>
+ export default {
+  data(){
+   return{
+    show1:true  //显示1111111
+   } 
+  }
+ }
+ -->
 
 <script>
-	import submit from '../../components/submit.vue'
+	// import submit from '../../components/submit.vue'
 	
 	export default {
+	
 		data() {
 			return {
+				
+				my_user_id:1,
+				show1:false,
+				Msg_content:"",
+				Msg_id:12121,
+				Msg_time:"",
+				Msg_status:"",
+				Msg_sender:2,
+				cur_user:3,
+				
+				arr: [
+				     
+				   { Msg_id: 1, Msg_time: "", Msg_status: "" ,Msg_sender:4,Msg_content:""}
+				 ],
+	
 				title: 'Albert 07/24/2022 11:52',
 				oneSentence:'Hi, your dress looks beautiful!'
 			}
 		},
 		methods: {
+			send(){	
+				this.Msg_time = new Date();
+				
+			uniCloud.callFunction({
+				name: 'query',
+				data: {
+					sentence: 'Insert Into Msg ( Msg_id, Msg_time, Msg_status, Msg_sender, Msg_content) Values ( ?, ?, ?, ?, ? )',
+					
+					arguments: [this.Msg_id, this.Msg_time,this.Msg_status,this.Msg_sender,this.Msg_content]
+				},
+				success: res => {
+					console.log(res.result[0])
+					
+				},					
+				fail: err=>{
+					// console.log(this.username, this.passwords, this.avator, this.email)
+					console.log(err)
+				}
+			})},
 			
+			find_msg(){
+				this.my_user_id = getApp().globalData.user_id;
+				console.log("Started!")
+				var u = 0;
+				var b = 105;
+			    uniCloud.callFunction({
+			     name: 'query',
+			     data: {
+			      sentence: 'SELECT * FROM Contain NATURAL JOIN Msg WHERE  Session_id=? ORDER BY Msg_time DESC  ',
+			      arguments: [b]
+			     },
+			     success: res => {
+					 console.log(res.result[0]);
+				this.arr=res.result
+			   for (u=0;u<this.arr.length;u++){
+				   if (this.arr[u]["Msg_sender"]==this.my_user_id) {this.arr[u]["is_user"]=true;}
+				   else {this.arr[u]["is_user"] = false;} 
+			   }
+				
+					     
+				  // this.arr=res.result
+			      console.log(this.arr);
+			      
+			     },     
+			     fail: err=>{
+			      
+			      console.log(err)
+			     }
+			    })
+			    
+			   },
+			      created(){
+			                     
+			                     this.find_msg();
+			                 }
+			     
+		
 		},
-		components:{
-			submit
-		},
-		onLoad(){ 
+		
+		onLoad(){
+			console.log("enter onLoad"),
+			this.find_msg()
+			
 		}
 	}
 </script>
 
 <style>
+	input {
+		border: 1px solid;
+		padding: 10px;
+		box-shadow: 5px 5px 20px #888888;
+	}
 	.content {
 		display: flex;
 		flex-direction: column;
@@ -118,7 +198,15 @@
 	.msg-right{
 		flex-direction: row-reverse;		
 	}
-	.chat-main{
-		margin-top: 650rpx;
+	.sub{
+		padding-top:0rpx;
+		padding-left: 500rpx;
 	}
+	.sub-1{
+		
+		width:500rpx;
+		padding-top:200rpx;
+		padding-left: -100rpx;
+	}
+	
 </style>
