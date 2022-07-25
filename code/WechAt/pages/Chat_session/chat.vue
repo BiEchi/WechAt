@@ -63,13 +63,12 @@
 			},
 			
 	//========================================================================================================================		
-			jumpToMessage(sess_id) {
-				// should jump to clicked message
-				console.log("....................fuck me....................")
-				console.log(sess_id)
-				this.$router.push('/pages/message/message')
-				console.log("....................fuck me....................")
-			},
+		jumpToMessage(sess_id) {
+			// go to the pages/message/message page and pass the session id to it using nativateTo
+			uni.navigateTo({
+				url: '../message/message?session_id=' + sess_id
+			})
+		},
 	//========================================================================================================================
 					 
 			 
