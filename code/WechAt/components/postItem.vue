@@ -15,6 +15,9 @@
 			<text>{{time}}</text>
 		</view>
 
+		<!-- button to delete the post -->
+		<button class="btn" @click="deletePost">Delete</button>
+
 		<!-- line for dividing the title and the content -->
 		<view class="line"></view> 
 	</view>
@@ -31,19 +34,42 @@
 			poster: {
 				// poster ID should be a number
 				type: Number,
-				default: 'This is the default poster'
+				default: 0
 			},
 			time: {
 				type: String,
 				default: 'This is the default time'
+			},
+			post_id: {
+				type: Number,
+				default: 0
 			}
 		},
 		data() {
 			return {
-				
+				// the user id of the current user
+				user_id: getApp().globalData.user_id
 			}
 		},
 		methods: {
+			deletePost() {
+				// decide whether the user is the poster of the post
+				if (this.poster == getApp().globalData.user_id) {
+					uniCloud.callFunction({
+						name: 'query',
+						data: {
+							sentence: 'DELETE FROM Post WHERE Post_id = ?',
+							arguments: [this.post_id]
+						},
+						success: res => {
+							// update the post content list
+							console.log("The deletePost() function is working!")
+						}
+					})
+				} else {
+					window.alert("You are not the poster of this post!")
+				}
+			}
 		}
 	}
 </script>
@@ -90,6 +116,13 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+	}
+
+	.btn {
+		width: 100%;
+		height: 10%;
+		background: #fff;
+		text-align: center;
 	}
 
 </style>
