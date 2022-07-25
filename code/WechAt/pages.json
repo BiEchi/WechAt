@@ -99,6 +99,12 @@
 			"style": {
 				"navigationBarTitleText": "Drift Bottle"
 			}
+		},
+		{
+			"path": "pages/product/create",
+			"style": {
+				"navigationBarTitleText": "Create Product"
+			}
 		}
         ,{
             "path" : "pages/delete/delete",

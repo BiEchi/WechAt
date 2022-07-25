@@ -1,8 +1,16 @@
 <template>
 	<view class="content">
 		<!-- make a list of the contents using v-for and content_list -->
+		<!-- display the ID of the user -->
+		<view class="postid">
+			<text class="postid-text">Your user ID is: {{user_id}}</text>
+		</view>
+
+		<!-- button for refreshing the page -->
+		<button class="btn" @click="refresh">Refresh</button>
+
 		<view v-for="item in items" :key="item['Post_id']">
-			<postItem :content="item['Post_content']" :poster="item['Post_sender']" :time="item['Publish_time']"></postItem>
+			<postItem :content="item['Post_content']" :poster="item['Post_sender']" :time="item['Publish_time']" :post_id="item['Post_id']"></postItem>
 		</view>
 	</view>
 </template>
@@ -16,7 +24,8 @@
 	export default { 
 		data() {
 			return {
-				items: []
+				items: [],
+				user_id: user_id
 			}
 		},
 		onLoad() {
@@ -42,6 +51,9 @@
 					} 
 		        })
 			},
+			refresh() {
+				this.getPost()
+			}
 		},
 		components: { 
 			postItem

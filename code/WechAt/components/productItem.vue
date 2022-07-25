@@ -15,6 +15,9 @@
 			<text>Product seller user ID is: {{productSeller}}</text>
 		</view>
 
+		<!-- button to delete the item -->
+		<button class="btn" @click="deleteProduct">Delete</button>
+
 		<!-- add a line -->
 		<view class="line">------</view>
 	</view>
@@ -30,18 +33,44 @@
 			},
 			productPrice: {
 				type: Number,
-				default: 'This is the default product price'
+				default: 0
 			},
 			productSeller: {
 				type: Number,
-				default: 'This is the default product seller'
+				default: 1
+			},
+			productId: {
+				type: Number,
+				default: 0
 			}
 		},
 		onLoad() {
 
 		},
 		methods: {
-
+			deleteProduct() {
+				// decide whether the user is the seller of the product
+				if (this.productSeller == getApp().globalData.user_id) {
+					uniCloud.callFunction({
+						name: 'query',
+						data: {
+							sentence: 'DELETE FROM Product WHERE Product_id = ?',
+							arguments: [this.productId]
+						},
+						success: res => {
+							// update the post content list
+							console.log("The deleteProduct() function is working!")
+							this.$emit('deleteProduct', this.productId)
+						},
+						fail: err => {
+							// jsonfy the error message
+							console.log(JSON.stringify(err))
+						}
+					})
+				} else {
+					window.alert("You are not the seller of this product!")
+				}
+			}
 		}
 	}
 </script>
@@ -73,4 +102,13 @@
 		width: 100%;
 		height: 1px;
 		background: #e5e5e5;
+	}
+	.btn {
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 10%;
+		background: #fff;
+		text-align: center;
 	}
