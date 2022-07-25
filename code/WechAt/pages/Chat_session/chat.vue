@@ -2,14 +2,14 @@
 <template>
 	<view class="content">
 		<!-- button to fetch the public session list -->
-		<button @click="getSessionList">get first message for public sessions</button>
+<!-- 		<button @click="getSessionList">get first message for public sessions</button> -->
 		
 		<!-- section for the public sessions -->
 		<!-- text to show that this is public session section -->
 		<view class="public">
 			<text class="public-text">Public Sessions</text>
 		</view>
-		<view v-for="pub_session in pub_sessions" :key="pub_session['Session_id']">
+		<view v-for="pub_session in pub_sessions" :key="pub_session['Session_id']" @click="jumpToMessage(pub_session['Session_id'])">
 			<div class="flex-container">
 			<div class="card">
 			  <img class="profile" src="/static/logo.png" alt="img1">
@@ -17,7 +17,7 @@
 			<div class="texting">
 				<h4 class="name"><b>{{pub_session['Chat_name']}}</b></h4>
 				<!-- display the first message -->
-				<p class="chatting">{{pub_session['Msg_Content']}}</p>
+				<p class="chatting">{{String(pub_session['Msg_Content']).substring(0,25)}} <text v-if="display(pub_session['Msg_Content'])"> ... </text> </p>
 			</div>
 		</div>
 		</view>
@@ -27,7 +27,7 @@
 		<view class="private">
 			<text class="private-text">Private Sessions</text>
 		</view>
-		<view v-for="pri_session in pri_sessions" :key="pri_session['Session_pri_id']">
+		<view v-for="pri_session in pri_sessions" :key="pri_session['Session_pri_id']" @click="jumpToMessage(pri_session['Session_id'])">
 			<div class="flex-container">
 				<div class="card">
 				<img class="profile" src="/static/logo.png" alt="img1">
@@ -54,13 +54,25 @@
 			} 
 		},
 		onLoad() {
-			this.start_getting_session(),
-			this.start_getting_msg()
+			this.start_getting_session()
 		},
 		methods: {
-			jumpToMessage() {
+			display(msg_string) {
+				if(String(msg_string).length > 28) return true;
+				else return false;
+			},
+			
+	//========================================================================================================================		
+			jumpToMessage(sess_id) {
 				// should jump to clicked message
-			}, 
+				console.log("....................fuck me....................")
+				console.log(sess_id)
+				this.$router.push('/pages/message/message')
+				console.log("....................fuck me....................")
+			},
+	//========================================================================================================================
+					 
+			 
 			start_getting_session() {
 				
 				this.my_user_id = getApp().globalData.user_id
