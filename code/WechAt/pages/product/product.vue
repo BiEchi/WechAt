@@ -1,16 +1,20 @@
 <template>
 	<view class="content">
+		<!-- button to create a new product, navigate to the product creation page -->
+		<view class="create-btn">
+			<button @click="navigate">Create a new product</button>
+		</view>
 		<!-- button to search for the expedcted item -->
 		<view class="search">
 			<!-- after clicking on the button, should execute the method getProduct() -->
-			<button class="search-btn" @click="getProduct">Search NOW!</button>
+			<button class="search-btn" @click="getProduct">Search/Refresh</button>
 			<input class="search-input" v-model="search_content" placeholder="Input keywords here" />
 		</view>
 		<!-- draw a solid black line -->
 		<view class="solidline"></view>
 		<!-- make a list of the contents using v-for and content_list -->
 		<view v-for="item in items" :key="item['Product_id']">
-			<productItem :productName="item['Name']" :productPrice="item['Price']" :productSeller="item['User_id']"></productItem>
+			<productItem :productName="item['Name']" :productPrice="item['Price']" :productSeller="item['User_id']" :productId="item['Product_id']"></productItem>
 		</view>
 	</view>
 </template>
@@ -52,6 +56,9 @@
 					} 
 		        })
 			},
+			navigate() {
+				 this.$router.push('/pages/product/create')
+			}
 		},
 		components: { 
 			productItem
@@ -135,6 +142,12 @@
 		height: 40px;
 		line-height: 40px;
 		text-align: center;
+	}
+
+	/* the create-btn should be larger than the search-btn */
+	.create-btn {
+		display: flex;
+		justify-content: center;
 	}
 
 </style>

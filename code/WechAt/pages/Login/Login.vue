@@ -121,12 +121,8 @@
 			register(){
 				 //直接跳转
 				 console.log(this.email, this.passwords)
-				 this.$router.push('/pages/register/register')
-				
-				
+				 this.$router.push('/pages/register/register')	
 			}
-		
-			
 		}
 	}
 </script>
