@@ -1,6 +1,9 @@
 <!-- jiayuan is modifying -->
 <template>
 	<view class="content">
+		<!-- button to fetch the public session list -->
+		<button @click="getSessionList">get first message for public sessions</button>
+		
 		<!-- section for the public sessions -->
 		<!-- text to show that this is public session section -->
 		<view class="public">
@@ -13,7 +16,8 @@
 			</div>
 			<div class="texting">
 				<h4 class="name"><b>{{pub_session['Chat_name']}}</b></h4>
-				<p class="chatting">{{pub_msg}}</p>
+				<!-- display the first message -->
+				<p class="chatting">{{pub_session['Msg_Content']}}</p>
 			</div>
 		</div>
 		</view>
@@ -30,7 +34,7 @@
 				</div>
 				<div class="texting">
 					<h4 class="name"><b>{{pri_session['User_name']}}</b></h4>
-					<p class="chatting">{{pri_msg}}</p>
+					<!-- <p class="chatting">{{pri_msgs_dict[pri_session['Session_pri_id']]}}</p> -->
 				</div>
 			</div>
 		</view>
@@ -39,19 +43,13 @@
 </template>
 
 <script>
-
-	var my_user_id = getApp().globalData.user_id
-
 	export default {
 		data() {
 			return {
 				pub_sessions: [],
 				pri_sessions: [],
-				pub_msg: 'Hello',
-				pri_msg: 'Hello',
-				pub_msgs: [],
-				pri_msgs: [],
-				pri_msgs2: [],
+				pub_msgs_dict: {},
+				pri_msgs_dict: {},
 				my_user_id: 1
 			} 
 		},
@@ -65,15 +63,16 @@
 			}, 
 			start_getting_session() {
 				
+				this.my_user_id = getApp().globalData.user_id
+				
 				uniCloud.callFunction({
 					name: 'query',
 					data: {
-						sentence: 'SELECT * FROM Joined NATURAL JOIN Chat_session WHERE User_id = ?',
-						arguments: [this.my_user_id]
+						sentence: 'SELECT * FROM Joined NATURAL JOIN Chat_session NATURAL JOIN (SELECT Session_id, Msg_Content FROM Contain c NATURAL JOIN Msg m NATURAL JOIN ( SELECT Session_id, MAX(Msg_time) AS MAXT FROM Joined NATURAL JOIN Chat_session NATURAL JOIN Contain NATURAL JOIN Msg WHERE User_id = ? GROUP BY Session_id) AS TEMP WHERE TEMP.Session_id = c.Session_id AND m.Msg_time = TEMP.MAXT ) AS Temp_table2 WHERE User_id = ?',
+						arguments: [this.my_user_id, this.my_user_id]
 					},
 					success: res => {
 						this.pub_sessions = res.result
-						console.log(res.result)
 						console.log('kill me in uniCloud success 1') 
 					},					
 					fail: err=>{
@@ -81,7 +80,7 @@
 					}
 				})
 				
-				// this query 
+				// this query is the complementary element for the last one
 				uniCloud.callFunction({
 					name: 'query',
 					data: {
@@ -93,56 +92,10 @@
 						console.log('kill me in uniCloud success 2')
 					},					
 					fail: err=>{
-						console.log(err)
-					}
-				})
-			},
-			start_getting_msg(){
-				uniCloud.callFunction({
-					name: 'query',
-					data: {
-						sentence: 'SELECT Session_id, Msg_Content FROM Contain c NATURAL JOIN Msg m NATURAL JOIN ( SELECT Session_id, MAX(Msg_time) AS MAXT FROM Joined NATURAL JOIN Chat_session NATURAL JOIN Contain NATURAL JOIN Msg WHERE User_id = 1 GROUP BY Session_id) AS TEMP WHERE TEMP.Session_id = c.Session_id AND m.Msg_time = TEMP.MAXT ',
-						arguments: [this.my_user_id]
-					},
-					success: res => {
-						this.pub_msgs = res.result
-						console.log(this.pub_msgs)
-						console.log('kill me in uniCloud success 11')
-					},					
-					fail: err=>{
 						console.log(err) 
 					}
 				})
-				   
-				uniCloud.callFunction({
-					name: 'query',
-					data: {
-						sentence: 'SELECT * FROM Joined_pri JOIN Chat_user ON User2_id = User_id WHERE User1_id = ? ',
-						arguments: [this.my_user_id]
-					},
-					success: res => {
-						this.pri_msgs = res.result
-						console.log('kill me in uniCloud success 22')
-					},					
-					fail: err=>{
-						console.log(err)
-					}
-				})
-				
-				uniCloud.callFunction({
-					name: 'query',
-					data: {
-						sentence: 'SELECT * FROM Joined_pri JOIN Chat_user ON User1_id = User_id WHERE User2_id = ?',
-						arguments: [this.my_user_id]
-					},
-					success: res => {
-						this.pri_msgs2 = res.result
-						console.log('kill me in uniCloud success 33')
-					},					
-					fail: err=>{
-						console.log(err)
-					}
-				})
+
 			}
 		}
 	}
