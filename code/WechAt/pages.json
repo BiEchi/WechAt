@@ -99,6 +99,14 @@
 				"navigationBarTitleText": "Change Password"
 			}
 		}
+        ,{
+            "path" : "pages/delete/delete",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "Delete Account"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

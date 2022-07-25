@@ -1,139 +1,63 @@
 <!-- This file is used for accounts, ... -->
 
 <template>
-
 	<view class="content">
-		<view class="text-area">
-			<text class="time">{{time}}</text>	
+		<image class="logo" src="/static/avtor.png"></image>
+		<scroll-view class="chat" scroll-y="true" scroll-with-animation="true">
+			<view class="chat-ls msg-left">
+				<view class="chat-time1">{{title}}
+					<view class="background1">
+						<view class="chat1">{{oneSentence}}</view>
+					</view>
+				</view>
+			</view>
+			<view class="chat-ls msg-right">
+				<view class="chat-time2">Your name 07/24/2022 11:53
+					<view class="background2">
+						<view class="chat2">Wow!Thank you~</view>
+					</view>
+				</view>
+			</view>
+			<view class="chat-ls msg-right">
+				<view class="chat-time2">Your name 07/24/2022 11:53
+					<view class="background2">
+						<view class="chat2">Would you like to but it?</view>
+					</view>
+				</view>
+			</view>
+			<view class="chat-ls msg-left">
+				<view class="chat-time1">{{title}}
+					<view class="background1">
+						<view class="chat1">Yep!</view>
+					</view>
+				</view>
+			</view> 
+		</scroll-view>
+		<view class="chat-main">
+		<submit></submit>
 		</view>
-		
-		<view class="text-area">
-			<text class="name">{{name}}</text>	
-		</view>
-		<!-- <view style="text-align: left;">{{name}}</view> -->
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-left">
-			<text class="oneSentence">{{oneSentence}}</text>	
-		</view>
-		 <button class="reg-button" @click="check_snippet" type="submit">register</button>
-		
 	</view>
 </template>
 
 <script>
+	import submit from '../../components/submit.vue'
+	
 	export default {
 		data() {
 			return {
-				time: ' 07/24/2022 11:52',
-				name : 'Albert',
-				oneSentence:'Hi, your dress looks beautiful!. product_id://14',
-				keyw:'9999',
-				snippet_id:0,
-				snippet_url:'',
-				snippet_content:''
+				title: 'Albert 07/24/2022 11:52',
+				oneSentence:'Hi, your dress looks beautiful!'
 			}
 		},
 		methods: {
-			check_snippet(){
-				// console.log(this.keyw)
-				var str=this.oneSentence;
-				var arr=str.split(" ");
-				var keyw=''
-				var w=0;
-				var i=0;
-				for (i=0;i<arr.length;i++){
-					if (arr[i].indexOf("https://") != -1){
-						this.keyw=arr[i];
-						w=0;
-						break;
-					}
-					if (arr[i].indexOf("product_id://") != -1){
-						this.keyw=arr[i].replace("product_id://","");
-						w=1;
-						break;
-					}
-				}
-				
-				
-				if (keyw!='9999'&&w==1){
-					
-					uniCloud.callFunction({
-										name: 'query',
-										data: {
-											sentence: 'SELECT * FROM Product WHERE product_id = ?',
-											//forget !!!E_mail? EMAIL?
-											arguments: [this.keyw]
-										},
-					
-					success: res => {      console.log(this.keyw)
-											// this.snippet_url="pages/product/product"
-											this.snippet_url="pages/product/product"+String(this.keyw)
-											this.snippet_content='This items name is'+String(res.result[0]['name'])+'and its price is' +String(res.result[0]['price'])
-											this.add_snippet()
-												
 			
-										},					
-										fail: err=>{
-											console.log('error')
-											// console.log('price')
-											console.log(err)
-										}
-									})
-					
-				}
-				// if (keyw!=NULL&&W==0){
-					
-				// 	uniCloud.callFunction({
-				// 						name: 'query',
-				// 						data: {
-				// 							sentence: 'SELECT * FROM Product WHERE product_id = ?',
-				// 							//forget !!!E_mail? EMAIL?
-				// 							arguments: [this.keyw]
-				// 						},
-					
-				// 	success: res => {       
-				// 							this.snippet_url="pages/product/product"+this.keyw
-				// 							this.snippet_content='This item's name is'+res.result[0]['name']+' and its price is '+res.result[0]['price']
-				// 							this.add_snippet()
-				// 							console.log(res.result[0]['name'])
-				// 							console.log(res.result[0]['price'])	
-							
-				// 						},					
-				// 						fail: err=>{
-											
-				// 							console.log(err)
-				// 						}
-				// 					})
-					
-				// }
-				
 		},
-		add_snippet(){
-			console.log(this.snippet_url)
-				uniCloud.callFunction({
-				  		name: 'query',
-				  		data: {
-				  			sentence: 'Insert Into Snippet ( Snippet_link, Snippet_content) Values ( ?, ? );',
-				  			arguments: [this.snippet_url, this.snippet_content]
-				  		},
-				  		success: res => {
-							console.log("success add")
-				  			// console.log(res.result[0])
-				  		},					
-				  		fail: err=>{
-							console.log("fail add")
-				  			console.log(err)
-				  		}
-				  	})
-										} 
-			}
-		
-		
-			
-
+		components:{
+			submit
+		},
+		onLoad(){ 
 		}
-		
-	
+	}
 </script>
 
 <style>
@@ -141,58 +65,60 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: left;
-		/* margin-top: 20rpx;
-		margin-left: -600rpx; */
+		justify-content: center;
 	}
 
 	.logo {
 		width: 50px;
 		height: 50px;
-		margin-top: 20rpx;
-		margin-left: -600rpx;
 		object-fit: cover;
 	}
-
-	.text-area {
-		/* margin-top: 10rpx;
-		margin-left: 10rpx; */
+	.chat-ls{
 		display: flex;
-		justify-content: center;
 	}
-	.text-left {
-		/* margin-top: 10rpx;
-		margin-left: 10rpx; */
-		display: flex;
-		justify-content:  flex-end;
-	}
-   .name{
-		margin-top: 10rpx;
-		margin-left: -620rpx;
-		font-size: 5rpx;
+	.chat-time1{
+		padding-top:5rpx;
+		padding-left: 5rpx;
+		font-size: 8rpx;
 		color: #8f8f94;
 	}
-	.oneSentence{
-			margin-top: -100rpx;
-			margin-left: 0rpx;
-			font-size: 3rpx;
-			color: #8f8f94;
-		}
-	
-	.time {
-		margin-top: 0rpx;
-		margin-left: 0rpx;
-		font-size: 5rpx;
+	.chat1{
+		padding-bottom:15rpx;
+		font-size: 16px;
+		padding-left: 10rpx;
+		color: #000000;
+	}
+	.background1{
+		max-width:480rpx;
+		border-radius: 10px 10px 10px 10px;
+		background-color: #f0f0f0;
+		padding-left: 10rpx;
+	}
+	.msg-left{
+		flex-direction: row;
+	}
+	.chat-time2{
+		padding-top:5rpx;
+		padding-left:5rpx;
+		font-size: 8rpx;
 		color: #8f8f94;
 	}
-	.reg-button:hover {
-	  background-color: #f44336;
-	  color: white;
+	.chat2{
+		padding-left: 10rpx;
+		padding-bottom:15rpx;
+		font-size: 16px;
+		color: #000000;
 	}
-	.setting{
-	  display: flex;
-	  flex-direction: row;
-	  align-items: center;
-	  justify-content: center; 
+	.background2{
+		padding-left: 10rpx;
+		max-width:480rpx;
+		border-radius: 10px 10px 10px 10px;
+		background-color: #55ff7f;
+	}
+	.msg-right{
+		flex-direction: row-reverse;		
+	}
+	.chat-main{
+		margin-top: 650rpx;
 	}
 </style>
