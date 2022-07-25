@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<!-- display the user ID -->
+		<view class="userId">
+			<text class="userIdText">Your User ID: {{user_id}}</text>
+		</view>
 
 		<!-- input box for the current password -->
 		<view class="inputBox">
@@ -29,10 +33,12 @@ export default {
 	data() {
 		return {
 			currentPassword: '',
-			newPassword: ''
+			newPassword: '',
+			user_id: user_id
 		}
 	},
 	onLoad() {
+		
 	},
 	methods: {
 		// change password
@@ -44,7 +50,7 @@ export default {
 					arguments: [user_id]
 				}
 			}).then(res => {
-				console.log(res.result[0]["User_password"])
+				console.log(user_id)
 				if (res.result[0]["User_password"] == this.currentPassword) {
 					uniCloud.callFunction({
 						name: 'query',
