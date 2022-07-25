@@ -62,6 +62,8 @@
 				cur_user:3,
 				Session_id_num: 105,
 				Msg_sent: '',
+				snippet_url:"",
+				snippet_content:"",
 				
 				arr: [
 				     
@@ -78,7 +80,9 @@
 				this.Msg_time = new Date();
 				this.my_user_id = getApp().globalData.user_id;
 				this.my_user_id = 28;
-				this.Msg_content = this.Msg_content + this.Msg_sent
+				this.check_snippet()
+				this.Msg_content = this.Msg_sent + this.snippet_url+this.snippet_content
+				
 				
 			uniCloud.callFunction({
 				name: 'query',
@@ -137,7 +141,74 @@
 			      created(){
 			                     
 			                     this.find_msg();
-			                 }
+			                 },
+			check_snippet(){
+									  				// console.log(this.keyw)
+									  				var str=this.Msg_sent;
+									  				var arr=str.split(" ");
+									  				var keyw=''
+									  				var w=0;
+									  				var i=0;
+									  				for (i=0;i<arr.length;i++){
+									  					if (arr[i].indexOf("https://") != -1){
+									  						this.keyw=arr[i];
+									  						w=0;
+									  						break;
+									  					}
+									  					if (arr[i].indexOf("product_id://") != -1){
+									  						this.keyw=arr[i].replace("product_id://","");
+									  						w=1;
+									  						break;
+									  					}
+									  				}
+									  				
+									  				
+									  				if (keyw!='9999'&&w==1){
+									  					
+									  					uniCloud.callFunction({
+									  										name: 'query',
+									  										data: {
+									  											sentence: 'SELECT * FROM Product WHERE product_id = ?',
+									  											//forget !!!E_mail? EMAIL?
+									  											arguments: [this.keyw]
+									  										},
+									  					
+									  					success: res => {      console.log(this.keyw)
+									  											// this.snippet_url="pages/product/product"
+									  											this.snippet_url="pages/product/product"+String(this.keyw)
+									  											this.snippet_content='This items name is'+String(res.result[0]['name'])+'and its price is' +String(res.result[0]['price'])
+									  											// this.add_snippet()
+									  												
+									  			
+									  										},					
+									  										fail: err=>{
+									  											console.log('error')
+									  											// console.log('price')
+									  											console.log(err)
+									  										}
+									  									})
+									  					
+									  				}
+									  	
+									  		},
+											add_snippet(){
+												console.log(this.snippet_url)
+													uniCloud.callFunction({
+													  		name: 'query',
+													  		data: {
+													  			sentence: 'Insert Into Snippet ( Snippet_link, Snippet_content) Values ( ?, ? );',
+													  			arguments: [this.snippet_url, this.snippet_content]
+													  		},
+													  		success: res => {
+																console.log("success add")
+													  			// console.log(res.result[0])
+													  		},					
+													  		fail: err=>{
+																console.log("fail add")
+													  			console.log(err)
+													  		}
+													  	})
+																			}
 			     
 		
 		},
