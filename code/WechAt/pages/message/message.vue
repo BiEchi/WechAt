@@ -209,7 +209,7 @@ export default {
 	onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数  
 		console.log("The argument passed in is:", option.session_id);
 		this.Session_id_num = option.session_id
-		this.get_msg()
+		this.find_msg()
 	}  
 };
 </script>
