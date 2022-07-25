@@ -27,26 +27,13 @@
 				"iconPath": "static/logo.png",
 				"selectedIconPath": "static/logo.png",
 				"text": "Products"
-			},
+			}, 
 			// account page
 			{
 				"pagePath": "pages/account/account",
 				"iconPath": "static/logo.png",
 				"selectedIconPath": "static/logo.png",
 				"text": "Account"
-			},
-			// message page
-			{
-				"pagePath": "pages/message/message",
-				"iconPath": "static/logo.png",
-				"selectedIconPath": "static/logo.png",
-				"text": "Message"
-			},
-			{
-				"pagePath": "pages/bottle/bottle",
-				"iconPath": "static/logo.png",
-				"selectedIconPath": "static/logo.png",
-				"text": "Bottle"
 			}
 		]
 	},
@@ -104,6 +91,12 @@
 			"path": "pages/product/create",
 			"style": {
 				"navigationBarTitleText": "Create Product"
+			}
+		},
+		{
+			"path": "pages/account/changePassword",
+			"style": {
+				"navigationBarTitleText": "Change Password"
 			}
 		}
     ],
