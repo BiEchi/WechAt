@@ -1,9 +1,9 @@
 
 
 <template>
-  <van-row class="an-btm">
-  <van-col span="24" v-bind:key="item" v-for="item in arr">
-   <div v-if="item.is_user">
+  <view class="an-btm">
+  <view span="24" v-for="(item,i) in arr2" v-bind:key="i">
+   <div v-if="!item.is_user">
    <view class="chat-ls msg-left">
     <view class="chat-time1">{{ item.Msg_sender }}  {{ item.Msg_time }}
      <view class="background1">
@@ -12,7 +12,7 @@
     </view>
    </view>
    </div>
-   <div v-else>
+   <div v-if="item.is_user">
    <view class="chat-ls msg-right">
     
     <view class="chat-time1">{{ item.Msg_sender }}  {{ item.Msg_time }}
@@ -22,8 +22,8 @@
     </view>
    </view>
  </div>
-  </van-col>
-  </van-row>
+  </view>
+  </view>
 
 </template>
 <!-- <div>
@@ -57,11 +57,13 @@
 				Msg_status:"",
 				Msg_sender:2,
 				cur_user:3,
+				Session_id_num: 105,
 				
 				arr: [
 				     
 				   { Msg_id: 1, Msg_time: "", Msg_status: "" ,Msg_sender:4,Msg_content:""}
 				 ],
+				arr2: {},
 	
 				title: 'Albert 07/24/2022 11:52',
 				oneSentence:'Hi, your dress looks beautiful!'
@@ -90,30 +92,36 @@
 			
 			find_msg(){
 				this.my_user_id = getApp().globalData.user_id;
+				this.my_user_id = 28;
 				console.log("Started!")
 				var u = 0;
-				var b = 105;
 			    uniCloud.callFunction({
 			     name: 'query',
 			     data: {
 			      sentence: 'SELECT * FROM Contain NATURAL JOIN Msg WHERE  Session_id=? ORDER BY Msg_time DESC  ',
-			      arguments: [b]
+			      arguments: [this.Session_id_num]
 			     },
 			     success: res => {
-					 console.log(res.result[0]);
-				this.arr=res.result
-			   for (u=0;u<this.arr.length;u++){
-				   if (this.arr[u]["Msg_sender"]==this.my_user_id) {this.arr[u]["is_user"]=true;}
-				   else {this.arr[u]["is_user"] = false;} 
+			   for (u=0;u<res.result.length;u++){
+				   console.log("my user id is: " + this.my_user_id)
+				   console.log("opposite user id is: " + res.result[u]["Msg_sender"])
+				   if (res.result[u]["Msg_sender"]==this.my_user_id)
+				   {
+					   res.result[u]["is_user"]=true;
+					   console.log("my user id is: " + this.my_user_id)
+					   }
+				   else {res.result[u]["is_user"] = false;} 
 			   }
+				this.arr2=res.result
+			   console.log("success!! ")
 				
 					     
 				  // this.arr=res.result
-			      console.log(this.arr);
+			      // console.log(this.arr);
 			      
-			     },     
+			     },      
 			     fail: err=>{
-			      
+			      console.log("Something is wrong")
 			      console.log(err)
 			     }
 			    })
