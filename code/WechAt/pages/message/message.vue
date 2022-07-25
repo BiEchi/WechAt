@@ -1,6 +1,5 @@
-
-
 <template>
+	 
   <view class="an-btm">
   <view span="24" v-for="(item,i) in arr2" v-bind:key="i">
    <div v-if="!item.is_user">
@@ -10,6 +9,7 @@
       <view class="chat1">{{item.Msg_content}}</view>
      </view>
     </view>
+
    </view>
    </div>
    <div v-if="item.is_user">
@@ -23,6 +23,10 @@
    </view>
  </div>
   </view>
+   <view class="in">
+    <input class="textbox" v-model='Msg_sent' placeholder="please input message">
+    <button class="bt" @click="send" type="submit">send</button>
+    </view>
   </view>
 
 </template>
@@ -52,12 +56,12 @@
 				my_user_id:1,
 				show1:false,
 				Msg_content:"",
-				Msg_id:12121,
 				Msg_time:"",
-				Msg_status:"",
+				Msg_status:"Pending",
 				Msg_sender:2,
 				cur_user:3,
 				Session_id_num: 105,
+				Msg_sent: '',
 				
 				arr: [
 				     
@@ -72,13 +76,16 @@
 		methods: {
 			send(){	
 				this.Msg_time = new Date();
+				this.my_user_id = getApp().globalData.user_id;
+				this.my_user_id = 28;
+				this.Msg_content = this.Msg_content + this.Msg_sent
 				
 			uniCloud.callFunction({
 				name: 'query',
 				data: {
-					sentence: 'Insert Into Msg ( Msg_id, Msg_time, Msg_status, Msg_sender, Msg_content) Values ( ?, ?, ?, ?, ? )',
+					sentence: 'Insert Into Msg ( Msg_time, Msg_status, Msg_sender, Msg_content) Values ( ?, ?, ?, ? )',
 					
-					arguments: [this.Msg_id, this.Msg_time,this.Msg_status,this.Msg_sender,this.Msg_content]
+					arguments: [ this.Msg_time,this.Msg_status, this.my_user_id, this.Msg_content]
 				},
 				success: res => {
 					console.log(res.result[0])
@@ -98,7 +105,7 @@
 			    uniCloud.callFunction({
 			     name: 'query',
 			     data: {
-			      sentence: 'SELECT * FROM Contain NATURAL JOIN Msg WHERE  Session_id=? ORDER BY Msg_time DESC  ',
+			      sentence: 'SELECT * FROM Contain NATURAL JOIN Msg WHERE  Session_id=? ORDER BY Msg_time  ',
 			      arguments: [this.Session_id_num]
 			     },
 			     success: res => {
@@ -144,6 +151,7 @@
 </script>
 
 <style>
+	
 	input {
 		border: 1px solid;
 		padding: 10px;
@@ -155,7 +163,6 @@
 		align-items: center;
 		justify-content: center;
 	}
-
 	.logo {
 		width: 50px;
 		height: 50px;
@@ -216,5 +223,17 @@
 		padding-top:200rpx;
 		padding-left: -100rpx;
 	}
-	
+	.in{
+	  margin-top:900rpx;
+	 }
+	 .bt{
+	  width:20%;
+	  margin-top:-90rpx;
+	  margin-right:0rpx;
+	 }
+	 .textbox{
+	  width:70%;
+	  margin-top:0rpx;
+	  margin-right:0rpx;
+	 }
 </style>
