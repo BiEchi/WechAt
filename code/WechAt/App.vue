@@ -6,7 +6,7 @@
 		
 		globalData: {
 			user_email: '',
-			user_id: 0
+			user_id: 1
 		},
 		onLaunch: function() {
 			console.log('App Launch') 

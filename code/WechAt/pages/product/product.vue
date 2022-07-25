@@ -1,5 +1,13 @@
 <template>
 	<view class="content">
+		<!-- button to search for the expedcted item -->
+		<view class="search">
+			<!-- after clicking on the button, should execute the method getProduct() -->
+			<button class="search-btn" @click="getProduct">Search NOW!</button>
+			<input class="search-input" v-model="search_content" placeholder="Input keywords here" />
+		</view>
+		<!-- draw a solid black line -->
+		<view class="solidline"></view>
 		<!-- make a list of the contents using v-for and content_list -->
 		<view v-for="item in items" :key="item['Product_id']">
 			<productItem :productName="item['Name']" :productPrice="item['Price']" :productSeller="item['User_id']"></productItem>
@@ -11,12 +19,13 @@
 	import productItem from '@/components/productItem.vue'
 	
 	// from App.vue
-	var user_id = 2
+	var user_id = getApp().globalData.user_id
 
 	export default { 
 		data() {
 			return {
-				items: [] 
+				items: [],
+				search_content: ''
 			}
 		},
 		onLoad() {
@@ -28,12 +37,14 @@
 				uniCloud.callFunction({
 					name: 'query',
 					data: { 
-						sentence: 'SELECT * FROM Product WHERE User_id = ?',
-						arguments: [3]
+						// select tge products with the keywork input by the user
+						sentence: 'SELECT * FROM Product WHERE Name LIKE ? ORDER BY Price ASC',
+						arguments: ['%' + this.search_content + '%']
 					}, 
 					success: res=>{ 
 						// update the post content list
-						this.items = res.result 
+						console.log("The getProduct() function is working!") 
+						this.items = res.result
 					}, 
 					fail: err=>{  
 						// jsonfy the error message
@@ -107,4 +118,23 @@
 		font-size: 36rpx;
 		color: #8f8f94;
 	}
+
+	.search-btn {
+		width: 150px;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		background-color: #00bcd4;
+		color: #fff;
+		border-radius: 5px;
+		margin-top: 20px;
+	}
+
+	.search-input {
+		width: 300px;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+	}
+
 </style>
