@@ -11,7 +11,7 @@
 	import postItem from '@/components/postItem.vue'
 	
 	// from App.vue
-	var user_id = 2
+	var user_id = getApp().globalData.user_id
 
 	export default { 
 		data() {
@@ -28,8 +28,9 @@
 				uniCloud.callFunction({
 					name: 'query',
 					data: { 
-						sentence: 'SELECT * FROM Post WHERE Post_id = ? OR Post_id = ? OR Post_id = ?',
-						arguments: [3, 6, 9]
+						// get the post from the person and his friends
+						sentence: 'SELECT * FROM Post WHERE Post_sender = ? OR Post_sender IN (SELECT User1_id FROM Joined_pri WHERE User2_id = ?) OR Post_sender IN (SELECT User2_id FROM Joined_pri WHERE User1_id = ?)',
+						arguments: [user_id, user_id, user_id]
 					}, 
 					success: res=>{ 
 						// update the post content list
