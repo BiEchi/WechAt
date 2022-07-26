@@ -332,28 +332,23 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 
 ## 2 Complex Queries
 
-### Query 1: Fetch all the sessions (both group chat and private chat) of the user
+### Query 1: Fetch all the public sessions of the user (including session ID and last message content)
 
 ```sql
-DROP PROCEDURE IF EXISTS keywordfind;
-CREATE PROCEDURE keywordfind (IN input VARCHAR(10),id INT) BEGIN
-    DROP TEMPORARY TABLE IF EXISTS _procedure_result_tmp;
-    CREATE TEMPORARY TABLE _procedure_result_tmp 
-        
-        (SELECT Chat_user.User_name 
-    FROM Chat_user 
-    WHERE Chat_user.User_name  LIKE  input AND Chat_user.User_id=id )
-        
-        UNION
-        (
-        SELECT Msg.Msg_content
-        FROM Msg
-        WHERE   Msg.Msg_content LIKE  input AND Msg.Msg_sender=id
-        );
-END
+SELECT * 
+FROM Joined NATURAL JOIN Chat_session NATURAL JOIN 
+(
+  SELECT Session_id, Msg_Content FROM Contain c NATURAL JOIN Msg m NATURAL JOIN 
+  ( 
+    SELECT Session_id, MAX(Msg_time) AS MAXT 
+    FROM Joined 
+    NATURAL JOIN Chat_session NATURAL JOIN Contain NATURAL JOIN Msg 
+    WHERE User_id = ? 
+    GROUP BY Session_id
+  ) AS TEMP WHERE TEMP.Session_id = c.Session_id AND m.Msg_time = TEMP.MAXT 
+) AS Temp_table2
 
-USE wechat;
-CALL keywordfind(CONCAT('%','m','%'),3);
+WHERE User_id = {{user_id}}
 ```
 
 #### Top 15 Outputs 
@@ -404,26 +399,17 @@ WHERE   Msg.Msg_content LIKE '%is%' AND Msg.Msg_sender= 14
 ### Query 2: Use a keyword to find all the friends and messages related to this user
 
 ```sql
-DROP PROCEDURE IF EXISTS keywordfind;
-CREATE PROCEDURE keywordfind (IN input VARCHAR(10)) BEGIN
-    DROP TEMPORARY TABLE IF EXISTS _procedure_result_tmp;
-    CREATE TEMPORARY TABLE _procedure_result_tmp 
-        
-        (SELECT Chat_user.User_name 
-    FROM Chat_user 
-    WHERE Chat_user.User_name  LIKE  input )
-        
-        UNION
-        (
-        SELECT Msg.Msg_content
-        FROM Msg
-        WHERE   Msg.Msg_content LIKE  input
-        );
-END
-
-USE wechat;
-CALL keywordfind(CONCAT('%','in','%'));
-select * FROM _procedure_result_tmp LIMIT 15;
+SELECT * 
+FROM Post NATURAL JOIN Chat_user
+WHERE Post_sender = {{user_id}} OR Post_sender IN 
+(
+  SELECT User1_id 
+  FROM Joined_pri 
+  WHERE User2_id = {{user_id}}
+) OR Post_sender IN 
+(
+  SELECT User2_id FROM Joined_pri WHERE User1_id = {{user_id}}
+)
 ```
 
 #### Top 15 Outputs
