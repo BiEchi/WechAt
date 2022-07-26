@@ -97,7 +97,7 @@ export default {
       });
 
       // refresh the message list
-      this.get_msg();
+      this.find_msg();
     },
 
     find_msg() {
@@ -210,7 +210,7 @@ export default {
 		console.log("The argument passed in is:", option.session_id);
 		this.Session_id_num = option.session_id
 		this.find_msg()
-	}  
+	} 
 };
 </script>
 
