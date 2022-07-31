@@ -33,19 +33,17 @@
   </view>
 </template>
 
-
 <script>
 // import submit from '../../components/submit.vue'
 
 export default {
-	
   data() {
     return {
       my_user_id: 0,
       show1: false,
       Msg_content: "",
       Msg_time: "",
-      Msg_status: "Sent", 
+      Msg_status: "Sent",
       Msg_sender: 2,
       cur_user: 3,
       Session_id_num: 1,
@@ -89,7 +87,22 @@ export default {
           ],
         },
         success: (res) => {
-          console.log(res.result[0]);
+          //  get the current largest msg_id
+          var current_id = res.result["insertId"];
+          uniCloud.callFunction({
+            name: "query",
+            data: {
+              sentence:
+                "Insert Into Contain ( Msg_id, Session_id ) Values ( ?, ? )",
+              arguments: [current_id, this.Session_id_num],
+            },
+            success: (res) => {
+              console.log(res.result);
+            },
+            fail: (err) => {
+              console.log(err);
+            },
+          });
         },
         fail: (err) => {
           console.log(err);
@@ -98,6 +111,11 @@ export default {
 
       // refresh the message list
       this.find_msg();
+		// refresh the message list page
+		find_msg()
+	 	uni.navigateTo({
+        	url: "../message/message?session_id=" + this.Session_id_num,
+      	});
     },
 
     find_msg() {
@@ -108,7 +126,7 @@ export default {
         name: "query",
         data: {
           sentence:
-            "SELECT * FROM Contain NATURAL JOIN Msg WHERE  Session_id=? ORDER BY Msg_time  ",
+            "SELECT * FROM Contain NATURAL JOIN Msg WHERE Session_id=? ORDER BY Msg_time  ",
           arguments: [this.Session_id_num],
         },
         success: (res) => {
@@ -123,10 +141,6 @@ export default {
             }
           }
           this.arr2 = res.result;
-          console.log("success!! ");
-
-          // this.arr=res.result
-          // console.log(this.arr);
         },
         fail: (err) => {
           console.log("Something is wrong");
@@ -235,10 +249,9 @@ input {
   display: flex;
 }
 .chat-time1 {
-  padding-top: 5rpx;
-  padding-left: 5rpx;
-  font-size: 12rpx;
-  color: #8f8f94;
+  font-size: 12px;
+  color: #888888;
+  margin-left: 10px;
 }
 .chat1 {
   padding-bottom: 15rpx;
