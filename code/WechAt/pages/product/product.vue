@@ -13,11 +13,11 @@
 		<!-- draw a solid black line -->
 		<view class="solidline"></view>
 		<!-- make a list of the contents using v-for and content_list -->
-		<view v-for="item in items" :key="item['Product_id']">
+		<view v-for="(item,i) in items" :key="item['Product_id']">
 			<productItem></productItem>>
 			<productItem :productName="item['Name']" :productPrice="item['Price']" :productSeller="item['User_id']" :productId="item['Product_id']"></productItem>
 		</view>
-		<view v-for="item_level in item_levels" :key="item_level['U_IDS']">
+		<view v-for="item_level in item_levels" :key="'A'+item_level['U_IDS']">
 			<productItem :credit="item_level['RATES']"></productItem>
 		</view>
 	</view>
@@ -69,7 +69,7 @@
 					name: 'query',
 					data: { 
 						// select tge products with the keywork input by the user
-						sentence: 'CALL Product_sort(?) ',
+						sentence: 'CALL wechat.Product_sort(?) ',
 						arguments:  this.search_content 
 					}, 
 					success: res=>{ 

@@ -260,13 +260,13 @@ export default {
 	// }
   },
 
-<<<<<<< HEAD
-	onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数  
-		console.log("The argument passed in is:", option.session_id);
-		this.Session_id_num = option.session_id
-		this.find_msg()
-	} 
-=======
+
+	// onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数  
+	// 	console.log("The argument passed in is:", option.session_id);
+	// 	this.Session_id_num = option.session_id
+	// 	this.find_msg()
+	// } 
+
   onLoad: function (option) {
     // //option为object类型，会序列化上个页面传递的参数
     console.log("The argument passed in is:", option.session_id);
@@ -276,7 +276,7 @@ export default {
     this.find_msg();
 
   },
->>>>>>> 617bb696f106329d74074bfefe12626eba7e3b86
+
 };
 </script>
 
