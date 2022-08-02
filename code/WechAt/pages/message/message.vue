@@ -5,8 +5,13 @@
         <view class="chat-ls msg-left">
           <view class="chat-time1"
             >{{ item.Msg_sender }} {{ item.Msg_time }}
+			<view v-if="item.Reputation==0"><img  class="level_logo" src="/static/level1.png" alt="img1" /></view> 
+			<view v-if="item.Reputation==1"><img  class="level_logo" src="/static/level2.png" alt="img1" /></view> 
+			<view v-if="item.Reputation==2"><img  class="level_logo" src="/static/level3.png" alt="img1" /></view> 
+			<view v-if="item.Reputation==3"><img  class="level_logo" src="/static/level4.png" alt="img1" /></view> 
             <view class="background1">
               <view class="chat1">{{ item.Msg_content }}</view>
+			  
             </view>
           </view>
         </view>
@@ -14,9 +19,14 @@
       <div v-if="item.is_user">
         <view class="chat-ls msg-right">
           <view class="chat-time1"
-            >{{ item.Msg_sender }} {{ item.Msg_time }}
+            >{{ item.Msg_sender }} {{ item.Msg_time }} 
+			<view v-if="item.Reputation==0"><img  class="level_logo" src="/static/level1.png" alt="img1" /></view>
+			<view v-if="item.Reputation==1"><img  class="level_logo" src="/static/level2.png" alt="img1" /></view> 
+			<view v-if="item.Reputation==2"><img  class="level_logo" src="/static/level3.png" alt="img1" /></view> 
+			<view v-if="item.Reputation==3"><img  class="level_logo" src="/static/level4.png" alt="img1" /></view> 
             <view class="background1">
               <view class="chat1">{{ item.Msg_content }}</view>
+			 
             </view>
           </view>
         </view>
@@ -30,6 +40,10 @@
       />
       <button class="bt" @click="send" type="submit">send</button>
     </view>
+	<view v-if="level==1" class="level1png"></view>
+	<view v-if="level==2" class="level2png"></view>
+	<view v-if="level==3" class="level3png"></view>
+	<view v-if="level==4" class="level4png"></view>
   </view>
 </template>
 
@@ -50,7 +64,7 @@ export default {
       Msg_sent: "",
       snippet_url: "",
       snippet_content: "",
-
+	  level: 4,
       arr: [
         {
           Msg_id: 1,
@@ -61,12 +75,15 @@ export default {
         },
       ],
       arr2: {},
-
+      user_levels:{},
       title: "Albert 07/24/2022 11:52",
       oneSentence: "Hi, your dress looks beautiful!",
     };
   },
   methods: {
+	  // find_level(){
+		 //  for 
+	  // },
     send() {
       this.Msg_time = new Date();
       this.my_user_id = getApp().globalData.user_id;
@@ -110,7 +127,7 @@ export default {
       });
 
 		// refresh the message list page
-		find_msg()
+		this.find_msg()
 	 	uni.navigateTo({
         	url: "../message/message?session_id=" + this.Session_id_num,
       	});
@@ -118,27 +135,31 @@ export default {
 
     find_msg() {
       this.my_user_id = getApp().globalData.user_id;
-      console.log("Started!");
+      // console.log("Started!");
       var u = 0;
       uniCloud.callFunction({
         name: "query",
         data: {
-          sentence:
-            "SELECT * FROM Contain NATURAL JOIN Msg WHERE Session_id=? ORDER BY Msg_time  ",
-          arguments: [this.Session_id_num],
+         sentence:' CALL Liveness(?)',
+         arguments:[this.Session_id_num], 
         },
         success: (res) => {
-          for (u = 0; u < res.result.length; u++) {
-            console.log("my user id is: " + this.my_user_id);
-            console.log("opposite user id is: " + res.result[u]["Msg_sender"]);
-            if (res.result[u]["Msg_sender"] == this.my_user_id) {
-              res.result[u]["is_user"] = true;
-              console.log("my user id is: " + this.my_user_id);
-            } else {
-              res.result[u]["is_user"] = false;
-            }
-          }
+			console.log(res.result[0]);
+			res.result=res.result[0];
+         for (u = 0; u < res.result.length; u++) {
+                     console.log("my user id is: " + this.my_user_id);
+                     console.log("opposite user id is: " + res.result[u]["Msg_sender"]);
+                     if (res.result[u]["Msg_sender"] == this.my_user_id) {
+                       res.result[u]["is_user"] = true;
+                       console.log("my user id is: " + this.my_user_id);
+                     } else {
+                       res.result[u]["is_user"] = false;
+                     }
+                   }
           this.arr2 = res.result;
+		
+		  console.log(res.result);
+		  // this.find_level();
         },
         fail: (err) => {
           console.log("Something is wrong");
@@ -215,14 +236,36 @@ export default {
           console.log(err);
         },
       });
-    },
+    }
+	// userlevel(){
+	// 	uniCloud.callFunction({
+	// 	  name: "query",
+	// 	  data: {
+	// 	    sentence:' CALL Liveness(?)',
+	// 	    arguments: this.Session_id_num
+	// 	  },
+	// 	  success: (res) => {
+	// 		  this.user_levels=res.result;
+	// 		 // console.log(this.user_levels[0])
+	// 	    console.log("success add user level");
+		   
+	// 	  },
+	// 	  fail: (err) => {
+	// 	    console.log("fail add");
+	// 	    console.log(err);
+	// 	  },
+	// 	});
+	// }
   },
 
   onLoad: function (option) {
-    //option为object类型，会序列化上个页面传递的参数
+    // //option为object类型，会序列化上个页面传递的参数
     console.log("The argument passed in is:", option.session_id);
     this.Session_id_num = option.session_id;
+	// this.userlevel();
+
     this.find_msg();
+
   },
 };
 </script>
@@ -310,4 +353,53 @@ input {
   margin-top: 0rpx;
   margin-right: 0rpx;
 }
+.level1png{
+	background-image: url("../../static/level1.png");
+	position: absolute;
+	top: -485px;
+	left: 250px;
+	width: 25px;
+	height: 25px;
+	z-index: 9999;
+	object-fit: cover;
+}
+.level2png{
+	background-image: url("../../static/level2.png");
+	position: absolute;
+	top: -485px;
+	left: 250px;
+	width: 25px;
+	height: 25px;
+	z-index: 9999;
+	object-fit: cover;
+}
+.level3png{
+	background-image: url("../../static/level3.png");
+	position: absolute;
+	top: -485px;
+	left: 250px;
+	width: 25px;
+	height: 25px;
+	z-index: 9999;
+	object-fit: cover;
+}
+.level4png{
+	background-image: url("../../static/level4.png");
+	position: absolute;
+	top: -485px;
+	left: 250px;
+	width: 25px;
+	height: 25px;
+	z-index: 9999;
+	object-fit: cover;
+}
+.level_logo {
+		height: 20rpx;
+		width: 20rpx;
+		margin-top: 0rpx;
+		margin-left: 0 rpx;
+		margin-right: auto;
+		margin-bottom: auto;
+	}
+
 </style>
