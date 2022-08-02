@@ -2,9 +2,9 @@
 
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-  host: '35.225.243.81',
+  host: '34.170.230.181',
   user: 'root',
-  password: '123456PP',
+  password: 'sAcM1SUsDg[{-E',
   database: 'wechat',
   port: 3306
 });
@@ -18,6 +18,7 @@ const query = function(sql, values) {
   return new Promise((resolve, reject) => {
     connection.query(sql, values, (error, results, fields) => {
       if (error) {
+		console.log(error)
         reject(error)
       } else {
         resolve(results)

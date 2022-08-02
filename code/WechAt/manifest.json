@@ -75,6 +75,7 @@
         "title" : "WechAt",
         "router" : {
             "base" : "./"
-        }
+        },
+        "domain" : "http://35.202.192.243/"
     }
 }

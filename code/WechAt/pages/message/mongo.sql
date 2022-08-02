@@ -1,75 +1,48 @@
-// DATABASE
-Courses
-{
-    "_id": {"$oid": string},
-    "course_id": int, //course id
-    "department": string,
-    "course_number": int,
-    "course_name": string,
-    "locations": [int] //list of location ids
-    "instructors": [int], //list of instructor ids
-    "year_offered": int,
-    "students": [int] //list of student ids
-    "reviews": [int] //list of review ids
-}
+// Movies		
+// {
+//     "_id": {
+//         "$oid": string
+//     },
+//     "movie_id": int,
+//     "director": string,
+//     "release_year": int,
+//     "ratings": int,
+//     "movie_name": string,
+//     "country": string,
+//     "genre": string,
+//     "actors": [int],
+//     "company": {
+//         "name": string,
+//         "start_year": int,
+//         "country": string
+//     }
+// }
 
-Reviews
-{
-    "_id": {"$oid": string},
-    "review_id": int
-    "student_id": int,
-    "student_name": string //student name
-    "course_id": string, //reviewed course id
-    "rating": int, //student rating of the course
-    "channel": string //how the student took the course
-}
+// Actors
+// {
+//     "_id": {
+//         "$oid": string
+//         },
+//     "actor_id": int,
+//     "actor_name": string,
+//     "birth_country": string
+// }
 
-Instructors
-{
-    "_id": {"$oid": string},
-    "instructor_id": int,
-    "instructor_name": string
-    "salary": int, //instructor's salary
-    "office": int //instructor's office id
-}
+// Viewers
+// {
+//     "_id": {
+//         "$oid": string
+//     },
+//     "viewer_id": int,
+//     "viewer_name": string,
+//     "birth_year": int,
+//     "join_year": int,
+//     "fav_movie": int,
+//     "fav_actors": [int],
+//     "fav_directors": [string]
+// }
 
-Locations
-{
-    "_id": {"$oid": "617a47"},
-    "location_id": int,
-    "capacity": int, //number of seats in the classroom
-    "num_of_window": int, //number of windows in the classroom
-    "num_of_doors": int //number of doors in the classroom
-}
-
-// QUESTION
-// For this question, only consider courses that has a course_number between 200 and 400 (inclusive). 
-// For all the instructors that taught these courses, write one MongoDB query to output 
-// (1) the instructor_id, 
-// (2) the year between the most recent and the oldest course they taught (as year_diff), 
-// (3) the number of unique students that they taught (as num_stu),
-// (4) the unique number of departments that the courses belongs to (as num_dept).
-// num_stu: the number of unique students the instructor taught
-// num_dept: the number of unique department associated with the courses the instructor taught
-// year_diff: the difference between the most recent and oldest year of the year_offered for the courses.
-
-// Requirement:
-// 1. Use $addToSet
-// 2. Use $size
-
-db.Courses.aggregate([
-    {
-        $match: {
-            course_number: {$gte: 200, $lte: 400}
-        }
-    },
-    {
-        $unwind: "$instructors"
-    },
-    {
-        $group: {
-            _id: "$instructors",
-            
-        }
-    }
-])
+// We group the viewer using the age they joined this movie club. Viewer's will be clustered into 5-year buckets. This means that a user born in 1982 and joined in 1993 would mean they joined the club at age 11 which belongs to joined_age = 15. This is equivalent to the following formula:
+// joined_age = CEIL((joined_year - birth_year) / 5) * 5
+// Write one MongoDB query that returns the number of favorite UK actors (actors.birth_country) for each joined_age group without eliminating duplicates. In addition, the query should also calculate, among the viewers who liked UK actors, the average ratings of their favorite movies (viewers.fav_movie) that were produced in the UK (Movies.country) per joined_age group. Note that you should eliminate duplicate movies when calculating the average rating.
+// Return for each joined_age group (as joined_age), the number of favorite UK actors (as num_actors), and the average ratings of the group's favorite UK movies(as avg_fav_mov_rating) if the viewer liked some UK actors. Sort the results by the joined_age in ascending order.
