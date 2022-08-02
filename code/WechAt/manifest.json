@@ -5,9 +5,9 @@
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
-	"networkTimeout": {
-		"request": 60000
-	},
+    "networkTimeout" : {
+        "request" : 60000
+    },
     /* 5+App特有相关 */
     "app-plus" : {
         "usingComponents" : true,
@@ -70,5 +70,11 @@
     },
     "uniStatistics" : {
         "enable" : false
+    },
+    "h5" : {
+        "title" : "WechAt",
+        "router" : {
+            "base" : "./"
+        }
     }
 }

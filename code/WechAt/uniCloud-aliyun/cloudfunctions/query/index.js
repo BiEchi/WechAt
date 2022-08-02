@@ -2,9 +2,9 @@
 
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-  host: '35.225.243.81',
+  host: '34.170.230.181',
   user: 'root',
-  password: '123456PP',
+  password: 'sAcM1SUsDg[{-E',
   database: 'wechat',
   port: 3306
 });
