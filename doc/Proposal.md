@@ -13,7 +13,7 @@ The chatroom system should bear basic functionalities including user login syste
 
 > Describe what data is stored in the database. (Where is the data from, what attributes and information would be stored?)
 
-![UML](UML.png)
+![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-02-200329.png)
 
 ## Dataset
 
@@ -49,16 +49,14 @@ These are the mother project tabs (without the “message” tab).
 
 The DBML desgin above is the mother project for this course project. We want to integrate our **chatroom** (the “message” tab) into the system, with several abstracted tables from the mother project:
 
-![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-07-12-042926.png)
+![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-02-221801.png)
 
-| Part             | Front-end | Back-end         |
-| ---------------- | --------- | ---------------- |
-| Post/Product     | Junyi     | Jack             |
-| Snippet          | Jingyuan  | Zhongqi          |
-| Chat_session/Msg | Xiaoyi    | Jiayuan          |
-| Chat_user/Bottle | Jack      | Puyu, Zhongqi    |
+### Assumptions
 
-
+1.   One product can only be created by one Chat_user, but a Chat_user may create multiple product or not.
+2.   One Chat_user can have multiple Msg histories which belongs to his chat.
+3.   One Msg history can only belong to one Chat_user.
+4.   Chat_user can see multiple post, but one post can only posted by one chat_user.
 
 ### Per-entity description
 
@@ -91,13 +89,6 @@ One **chat_user** can **like or be blacklisted** in multiple post, but one **pos
 ● A **chat_session** is the group chat session among random number of users (more than two user). It has a **unique id** and random **name**.
 
 ● A **message** is a message from a user to a group chat or a private chat, which might have either the **private session i**d or the **session id**. Each message has the **time** and **content**; also, it can be traced to **sender**, and message can have **status**.
-
-### Assumptions
-
-1.   One product can only be created by one Chat_user, but a Chat_user may create multiple product or not.
-2.   One Chat_user can have multiple Msg histories which belongs to his chat.
-3.   One Msg history can only belong to one Chat_user.
-4.   Chat_user can see multiple post, but one post can only posted by one chat_user.
 
 ## Dataset Schema 
 
