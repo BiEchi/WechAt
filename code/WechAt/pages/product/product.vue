@@ -14,7 +14,11 @@
 		<view class="solidline"></view>
 		<!-- make a list of the contents using v-for and content_list -->
 		<view v-for="item in items" :key="item['Product_id']">
+			<productItem></productItem>>
 			<productItem :productName="item['Name']" :productPrice="item['Price']" :productSeller="item['User_id']" :productId="item['Product_id']"></productItem>
+		</view>
+		<view v-for="item_level in item_levels" :key="item_level['U_IDS']">
+			<productItem :credit="item_level['RATES']"></productItem>
 		</view>
 	</view>
 </template>
@@ -29,7 +33,8 @@
 		data() {
 			return {
 				items: [],
-				search_content: ''
+				item_levels:[],
+				search_content: 'f'
 			}
 		},
 		onLoad() {
@@ -46,7 +51,7 @@
 						arguments: ['%' + this.search_content + '%']
 					}, 
 					success: res=>{ 
-						// update the post content list
+						this.rankbycredit()
 						console.log("The getProduct() function is working!") 
 						this.items = res.result
 					}, 
@@ -58,6 +63,27 @@
 			},
 			navigate() {
 				 this.$router.push('/pages/product/create')
+			},
+			rankbycredit(){
+				uniCloud.callFunction({
+					name: 'query',
+					data: { 
+						// select tge products with the keywork input by the user
+						sentence: 'CALL Product_sort(?) ',
+						arguments:  this.search_content 
+					}, 
+					success: res=>{ 
+						this.item_levels = res.result[0]
+					    
+						console.log("The rankbycredit() function is working!") 
+						console.log(this.item_levels )
+						
+					}, 
+					fail: err=>{  
+						// jsonfy the error message
+						console.log(JSON.stringify(err))
+					} 
+				})
 			}
 		},
 		components: { 

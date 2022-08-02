@@ -14,7 +14,12 @@
 		<view class="product-seller">
 			<text>Product seller user ID is: {{productSeller}}</text>
 		</view>
-
+		
+		<!-- view for product seller -->
+	<view v-if="credit==0"><img  class="level_logo" src="/static/level1.png" alt="img1" /></view>
+	<view v-if="credit==1"><img  class="level_logo" src="/static/level2.png" alt="img1" /></view> 
+	<view v-if="credit==2"><img  class="level_logo" src="/static/level3.png" alt="img1" /></view> 
+	<view v-if="credit==3"><img  class="level_logo" src="/static/level4.png" alt="img1" /></view> 
 		<!-- button to delete the item -->
 		<button class="btn" @click="deleteProduct">Delete</button>
 
@@ -26,6 +31,7 @@
 <script>
 	export default {
 		name: "productItem",
+		
 		props: {
 			productName: {
 				type: String,
@@ -42,8 +48,13 @@
 			productId: {
 				type: Number,
 				default: 0
-			}
+			},
+			credit:{
+				type: Number,
+				default: 0,
+				},
 		},
+		
 		onLoad() {
 
 		},
@@ -92,6 +103,43 @@
 		background: #fff;
 		text-align: center;
 	}
+	.usrcrdt1png{
+	background-image: url("../../static/level1.png");
+	position: absolute;
+	top: -485px;
+	left: 250px;
+	width: 25px;
+	height: 25px;
+	z-index: 9999;
+	object-fit: cover;
+	}
+	.usrcrdt2png{
+		background-image: url("../static/level2.png");
+		position: relative;
+		top: 0px;
+		left: 100px;
+		width: 100%;
+		height: 100%;
+		z-index: 9999;
+	}
+	.usrcrdt3png{
+		background-image: url("../static/level3.png");
+		position: relative;
+		top: 0px;
+		left: 100px;
+		width: 100%;
+		height: 100%;
+		z-index: 9999;
+	}
+	.usrcrdt4png{
+		background-image: url("../static/level4.png");
+		position: relative;
+		top: 0px;
+		left: 100px;
+		width: 100%;
+		height: 100%;
+		z-index: 9999;
+	}
 	.to-left {
 		float: left;
 	}
@@ -111,4 +159,12 @@
 		height: 10%;
 		background: #fff;
 		text-align: center;
+	}
+.level_logo {
+		height: 20rpx;
+		width: 20rpx;
+		margin-top: 0rpx;
+		margin-left: 0 rpx;
+		margin-right: auto;
+		margin-bottom: auto;
 	}
