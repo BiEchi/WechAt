@@ -33,6 +33,12 @@
 				"iconPath": "static/logo.png",
 				"selectedIconPath": "static/logo.png",
 				"text": "Account"
+			},
+			{
+				"pagePath": "pages/bottle/bottle",
+				"iconPath": "static/logo.png",
+				"selectedIconPath": "static/logo.png",
+				"text": "Bottle"
 			}
 		]
 	},
