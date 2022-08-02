@@ -5,10 +5,10 @@
         <view class="chat-ls msg-left">
           <view class="chat-time1"
             >{{ item.Msg_sender }} {{ item.Msg_time }}
-			<view v-if="item.Reputation==0"><img  class="level_logo" src="/static/level1.png" alt="img1" /></view> 
-			<view v-if="item.Reputation==1"><img  class="level_logo" src="/static/level2.png" alt="img1" /></view> 
-			<view v-if="item.Reputation==2"><img  class="level_logo" src="/static/level3.png" alt="img1" /></view> 
-			<view v-if="item.Reputation==3"><img  class="level_logo" src="/static/level4.png" alt="img1" /></view> 
+			<view v-if="item.Reputation=='Level 0'"><img  class="level_logo" src="/static/level1.png" alt="img1" /></view> 
+			<view v-if="item.Reputation=='Level 1'"><img  class="level_logo" src="/static/level2.png" alt="img1" /></view> 
+			<view v-if="item.Reputation=='Level 2'"><img  class="level_logo" src="/static/level3.png" alt="img1" /></view> 
+			<view v-if="item.Reputation=='Level 3'"><img  class="level_logo" src="/static/level4.png" alt="img1" /></view> 
             <view class="background1">
               <view class="chat1">{{ item.Msg_content }}</view>
 			  
@@ -20,10 +20,10 @@
         <view class="chat-ls msg-right">
           <view class="chat-time1"
             >{{ item.Msg_sender }} {{ item.Msg_time }} 
-			<view v-if="item.Reputation==0"><img  class="level_logo" src="/static/level1.png" alt="img1" /></view>
-			<view v-if="item.Reputation==1"><img  class="level_logo" src="/static/level2.png" alt="img1" /></view> 
-			<view v-if="item.Reputation==2"><img  class="level_logo" src="/static/level3.png" alt="img1" /></view> 
-			<view v-if="item.Reputation==3"><img  class="level_logo" src="/static/level4.png" alt="img1" /></view> 
+			<view v-if="item.Reputation=='Level 0'"><img  class="level_logo" src="/static/level1.png" alt="img1" /></view>
+			<view v-if="item.Reputation=='Level 1'"><img  class="level_logo" src="/static/level2.png" alt="img1" /></view> 
+			<view v-if="item.Reputation=='Level 2'"><img  class="level_logo" src="/static/level3.png" alt="img1" /></view> 
+			<view v-if="item.Reputation=='Level 3'"><img  class="level_logo" src="/static/level4.png" alt="img1" /></view> 
             <view class="background1">
               <view class="chat1">{{ item.Msg_content }}</view>
 			 
@@ -49,7 +49,6 @@
 
 <script>
 // import submit from '../../components/submit.vue'
-
 export default {
   data() {
     return {
@@ -90,7 +89,6 @@ export default {
       this.check_snippet();
       this.Msg_content =
         this.Msg_sent + this.snippet_url + this.snippet_content;
-
       uniCloud.callFunction({
         name: "query",
         data: {
@@ -125,16 +123,12 @@ export default {
           console.log(err);
         },
       });
-
-      // refresh the message list
-      this.find_msg();
 		// refresh the message list page
 		this.find_msg()
 	 	uni.navigateTo({
         	url: "../message/message?session_id=" + this.Session_id_num,
       	});
     },
-
     find_msg() {
       this.my_user_id = getApp().globalData.user_id;
       // console.log("Started!");
@@ -191,7 +185,6 @@ export default {
           break;
         }
       }
-
       if (keyw != "9999" && w == 1) {
         uniCloud.callFunction({
           name: "query",
@@ -200,7 +193,6 @@ export default {
             //forget !!!E_mail? EMAIL?
             arguments: [this.keyw],
           },
-
           success: (res) => {
             console.log(this.keyw);
             // this.snippet_url="pages/product/product"
@@ -259,24 +251,13 @@ export default {
 	// 	});
 	// }
   },
-
-
-	// onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数  
-	// 	console.log("The argument passed in is:", option.session_id);
-	// 	this.Session_id_num = option.session_id
-	// 	this.find_msg()
-	// } 
-
   onLoad: function (option) {
     // //option为object类型，会序列化上个页面传递的参数
     console.log("The argument passed in is:", option.session_id);
     this.Session_id_num = option.session_id;
 	// this.userlevel();
-
     this.find_msg();
-
   },
-
 };
 </script>
 
@@ -411,5 +392,4 @@ input {
 		margin-right: auto;
 		margin-bottom: auto;
 	}
-
 </style>
