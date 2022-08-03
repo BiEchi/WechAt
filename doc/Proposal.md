@@ -11,11 +11,9 @@ This project is the sub-project of the mother project **IntLife.** The mother pr
 
 > Describe what data is stored in the database. (Where is the data from, what attributes and information would be stored?)
 
-![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-000533.png)
+We decide to inject our dataset using randomly generated data from https://generatedata.com/.
 
-## Dataset
-
-We decide to inject our dataset with the corpus from the Internet before we implement the messaging application. We currently decide to use the Douban Chinese dialog corpus for our project initialization. Other stuff like message time is going to be generated automatically.
+![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-013529.png)
 
 ## Creativity, Application And Usefulness
 
@@ -43,9 +41,9 @@ These are the mother project tabs (without the “message” tab).
 
 ## Description
 
-The DBML desgin above is the mother project for this course project. We want to integrate our **chatroom** (the “message” tab) into the system, with several abstracted tables from the mother project:
+For your convenience, we include the same UML graph here:
 
-![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-02-234821.png)
+![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-013529.png)
 
 ### Attributes
 
@@ -90,7 +88,13 @@ The DBML desgin above is the mother project for this course project. We want to 
    1. `Session_id`: uniquely identify a Chat_session.
    2. `Chat_name`: The name of the Chat_session
 
-7.   **Msg**
+7.   **Chat_session_pri**
+
+     1.   `Session_pri_id`: uniquely identify a private session.
+     2.   `Pending_flag`: after a friend invitation is sent, the pending flag will be set to `1`. After the invitation is accepted, it will be set to `0`.
+     3.   `Blacklisg_flag`: if a friend is in the blacklist (the flag is `1`), then both sides of the friendship can neither send or receive any message from the other side.
+
+8.   **Msg**
    1. `Msg_id`: uniquely identify a Msg.
    2. `Msg_time`: The time when the Msg is sent.
    3. `Msg_status`: Whether the Msg is sending or pending
@@ -117,14 +121,18 @@ The DBML desgin above is the mother project for this course project. We want to 
 4.   **Product** is the main component of the chat system and is sold by some **Chat_user**, it also linked by **Snippet**.
      1. One **Product** can be sold by exactly one **Chat_user**.
      2. One **Product** can be linked by exactly one **Snippet**.
-2. **Snippet** is a kind of small card. It can display contents of the Product. It links **Product**. It also has relation with **Post** and **Msg**, connected by **Append_post** and **Append_msg** respectively. 
+5.   **Snippet** is a kind of small card. It can display contents of the Product. It links **Product**. It also has relation with **Post** and **Msg**, connected by Append_post and Append_msg respectively. 
    1. One **Snippet** can link exactly one **Product**.
    2. One **Snippet** can be appended by exactly one **Post**. 
    3. One **Snippet** can be appended by exactly one **Msg**.
-3. **Chat_session** is a collection of many Msg. It has relationship with **Chat_user** and **Msg**. 
-   1. One **Chat_session** can be **Joined/Admined** by at least one **Chat_user.**
+6.   **Chat_session** is a collection of many Msg. It has relationship with **Chat_user** and **Msg**. 
+   1. One **Chat_session** can be Joined/Admined by at least one **Chat_user.**
    2. One **Chat_session** contain 0 or more **Msg.**
-4. **Msg** contains information of a message sent by Chat_user. **Msg** has relationship with **Chat_session, Snippet**, and **Chat_user**. 
+7.   **Chat_session_pri** is another collection of **Msg**, but it only contains 2 **Chat_user**. We use this approach to store friendships.
+     1.   **Chat_session_pri** can be privately joined by 2 friends at the same time, which means that if one quits the friendship, this **Chat_session_pri** will be deleted.
+     2.   One **Chat_session** contain 0 or more **Msg.**
+
+8.   **Msg** contains information of a message sent by Chat_user. **Msg** has relationship with **Chat_session, Snippet**, and **Chat_user**. 
    1. One **Msg** is contained in exactly one **Chat_session**.
    2.  One **Msg** can be sent by exactly one **Chat_user**. 
    3. One **Msg** can be appended by no Snippet or more **Snippet**.
