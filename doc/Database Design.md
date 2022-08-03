@@ -10,28 +10,21 @@
 
 <img src="http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-001555.png" alt="image-20220802191554857" style="zoom:50%;" />
 
+## Insert at least 1000 rows in a database
+
+We have several databases with more than 1000 rows. Here are some of them:
+
+![image-20220803120000908](../../../../../../../Library/Application Support/typora-user-images/image-20220803120000908.png)
+
+![image-20220803120007085](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-170007.png)
+
+![image-20220803120017054](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-170017.png)
+
 ## Database Schema CREATE DDLs
 
+To avoid FOREIGN KEY tables created before FOREIGN KEY constraint, we made all FOREIGN KEY constraints at the end.
+
 ```sql
-/*
- Navicat MySQL Data Transfer
-
- Source Server         : wechat
- Source Server Type    : MySQL
- Source Server Version : 80026
- Source Host           : 35.225.243.81:3306
- Source Schema         : wechat
-
- Target Server Type    : MySQL
- Target Server Version : 80026
- File Encoding         : 65001
-
- Date: 02/08/2022 19:19:53
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
 -- ----------------------------
 -- Table structure for Admin
 -- ----------------------------
@@ -43,9 +36,7 @@ CREATE TABLE `Admin` (
   `Time_end` date DEFAULT NULL,
   PRIMARY KEY (`User_id`,`Session_id`) USING BTREE,
   KEY `se__id` (`Session_id`),
-  KEY `idx_Time_begin` (`Time_begin`),
-  CONSTRAINT `se__id` FOREIGN KEY (`Session_id`) REFERENCES `Chat_session` (`Session_id`),
-  CONSTRAINT `usid__` FOREIGN KEY (`User_id`) REFERENCES `Chat_user` (`User_id`)
+  KEY `idx_Time_begin` (`Time_begin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -57,8 +48,6 @@ CREATE TABLE `Append_msg` (
   `Msg_id` int DEFAULT NULL,
   KEY `snipid` (`Snippet_id`),
   KEY `msgid` (`Msg_id`),
-  CONSTRAINT `msgid` FOREIGN KEY (`Msg_id`) REFERENCES `Msg` (`Msg_id`),
-  CONSTRAINT `snippet` FOREIGN KEY (`Snippet_id`) REFERENCES `Snippet` (`Snippet_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -69,7 +58,6 @@ CREATE TABLE `Append_post` (
   `Snippet_id` int DEFAULT NULL,
   `Post_id` int DEFAULT NULL,
   KEY `snippetid` (`Snippet_id`),
-  CONSTRAINT `snippetid` FOREIGN KEY (`Snippet_id`) REFERENCES `Snippet` (`Snippet_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -133,22 +121,7 @@ CREATE TABLE `Contain` (
   `Msg_id` int NOT NULL,
   `Session_id` int NOT NULL,
   PRIMARY KEY (`Session_id`,`Msg_id`),
-  KEY `Msg_id` (`Msg_id`),
-  CONSTRAINT `Contain_ibfk_1` FOREIGN KEY (`Session_id`) REFERENCES `Chat_session` (`Session_id`),
-  CONSTRAINT `Contain_ibfk_2` FOREIGN KEY (`Msg_id`) REFERENCES `Msg` (`Msg_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- ----------------------------
--- Table structure for Contain_pri
--- ----------------------------
-DROP TABLE IF EXISTS `Contain_pri`;
-CREATE TABLE `Contain_pri` (
-  `Msg_id` int NOT NULL,
-  `Session_pri_id` int NOT NULL,
-  PRIMARY KEY (`Session_pri_id`,`Msg_id`),
-  KEY `Msg_id` (`Msg_id`),
-  CONSTRAINT `Contain_pri_ibfk_1` FOREIGN KEY (`Msg_id`) REFERENCES `Msg` (`Msg_id`),
-  CONSTRAINT `Contain_pri_ibfk_2` FOREIGN KEY (`Session_pri_id`) REFERENCES `Chat_pri_session` (`Session_pri_id`)
+  KEY `Msg_id` (`Msg_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -162,8 +135,6 @@ CREATE TABLE `Joined` (
   `Time_end` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`User_id`,`Session_id`) USING BTREE,
   KEY `seid` (`Session_id`),
-  CONSTRAINT `seid` FOREIGN KEY (`Session_id`) REFERENCES `Chat_session` (`Session_id`),
-  CONSTRAINT `user___id` FOREIGN KEY (`User_id`) REFERENCES `Chat_user` (`User_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -179,9 +150,7 @@ CREATE TABLE `Joined_pri` (
   PRIMARY KEY (`User1_id`,`User2_id`) USING BTREE,
   KEY `user2` (`User2_id`),
   KEY `session_pri` (`Session_pri_id`),
-  CONSTRAINT `session_pri` FOREIGN KEY (`Session_pri_id`) REFERENCES `Chat_pri_session` (`Session_pri_id`),
-  CONSTRAINT `user1` FOREIGN KEY (`User1_id`) REFERENCES `Chat_user` (`User_id`),
-  CONSTRAINT `user2` FOREIGN KEY (`User2_id`) REFERENCES `Chat_user` (`User_id`)
+  CONSTRAINT `session_pri` FOREIGN KEY (`Session_pri_id`) REFERENCES `Chat_pri_session` (`Session_pri_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -197,8 +166,7 @@ CREATE TABLE `Msg` (
   PRIMARY KEY (`Msg_id`),
   KEY `the_sender` (`Msg_sender`),
   KEY `idx_Msg_Status` (`Msg_status`),
-  KEY `idx_Content` (`Msg_content`),
-  CONSTRAINT `the_sender` FOREIGN KEY (`Msg_sender`) REFERENCES `Chat_user` (`User_id`)
+  KEY `idx_Content` (`Msg_content`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1035 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -211,8 +179,7 @@ CREATE TABLE `Post` (
   `Publish_time` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `Post_content` varchar(12000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`Post_id`),
-  KEY `sender` (`Post_sender`),
-  CONSTRAINT `sender` FOREIGN KEY (`Post_sender`) REFERENCES `Chat_user` (`User_id`)
+  KEY `sender` (`Post_sender`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -224,9 +191,7 @@ CREATE TABLE `Post_Like` (
   `Post_id` int NOT NULL,
   `Like_amount` int DEFAULT NULL,
   PRIMARY KEY (`User_id`,`Post_id`),
-  KEY `post` (`Post_id`),
-  CONSTRAINT `post` FOREIGN KEY (`Post_id`) REFERENCES `Post` (`Post_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `user` FOREIGN KEY (`User_id`) REFERENCES `Chat_user` (`User_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  KEY `post` (`Post_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -240,8 +205,7 @@ CREATE TABLE `Product` (
   `Price` int DEFAULT NULL,
   `Photo_url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Product_id`),
-  KEY `userid` (`User_id`),
-  CONSTRAINT `userid` FOREIGN KEY (`User_id`) REFERENCES `Chat_user` (`User_id`)
+  KEY `userid` (`User_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1007 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -255,173 +219,397 @@ CREATE TABLE `Snippet` (
   PRIMARY KEY (`Snippet_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1229 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- ----------------------------
--- Procedure structure for FetchSessionList
--- ----------------------------
-DROP PROCEDURE IF EXISTS `FetchSessionList`;
-delimiter ;;
-CREATE PROCEDURE `FetchSessionList`(IN User_id_input int)
-BEGIN
-    DROP TEMPORARY TABLE IF EXISTS _procedure_result_tmp;
-    CREATE TEMPORARY TABLE _procedure_result_tmp 
-        (
-        SELECT Joined.Session_id 
-        FROM Joined 
-        WHERE Joined.User_id = User_id_input
-        )
-        UNION
-        (
-        SELECT Joined_pri.Session_pri_id 
-        FROM Joined_pri 
-        WHERE Joined_pri.User1_id = User_id_input OR Joined_pri.User2_id = User_id_input
-        );
-END
-;;
-delimiter ;
+-------------------------------------------------------------------
 
--- ----------------------------
--- Procedure structure for keywordfind
--- ----------------------------
-DROP PROCEDURE IF EXISTS `keywordfind`;
-delimiter ;;
-CREATE PROCEDURE `keywordfind`(IN input VARCHAR(10),id INT)
-BEGIN
-    DROP TEMPORARY TABLE IF EXISTS _procedure_result_tmp;
-    CREATE TEMPORARY TABLE _procedure_result_tmp 
-        
-        (SELECT Chat_user.User_name 
-    FROM Chat_user 
-    WHERE Chat_user.User_name  LIKE  input AND Chat_user.User_id=id )
-        
-        UNION
-        (
-        SELECT Msg.Msg_content
-        FROM Msg
-        WHERE   Msg.Msg_content LIKE  input AND Msg.Msg_sender=id
-        );
-END
-;;
-delimiter ;
+-- Admin
+ALTER TABLE `Admin` ADD CONSTRAINT `se_id` FOREIGN KEY `Session_id` REFERENCES `Chat_session` (`Session_id`);
+ALTER TABLE `Admin` ADD CONSTRAINT `usid_` FOREIGN KEY `User_id` REFERENCES `Chat_user` (`User_id`);
 
-SET FOREIGN_KEY_CHECKS = 1;
+-- Append_msg
+ALTER TABLE `Append_msg` ADD CONSTRAINT `msgid` FOREIGN KEY `Msg_id` REFERENCES `Msg` (`Msg_id`);
+ALTER TABLE `Append_msg` ADD CONSTRAINT `snippet` FOREIGN KEY `Snippet_id` REFERENCES `Snippet` (`Snippet_id`);
 
+-- Append_post
+ALTER TABLE `Append_post` ADD CONSTRAINT `snippetid` FOREIGN KEY `Snippet_id` REFERENCES `Snippet` (`Snippet_id`);
+
+-- Contain
+ALTER TABLE `Contain` ADD CONSTRAINT `Contain_ibfk_1` FOREIGN KEY `Session_id` REFERENCES `Chat_session` (`Session_id`);
+ALTER TABLE `Contain` ADD CONSTRAINT `Contain_ibfk_2` FOREIGN KEY `Msg_id` REFERENCES `Msg` (`Msg_id`)
+
+-- Joined
+ALTER TABLE `Joined` ADD CONSTRAINT `seid` FOREIGN KEY `Session_id` REFERENCES `Chat_session` (`Session_id`);
+ALTER TABLE `Joined` ADD CONSTRAINT `user___id` FOREIGN KEY `User_id` REFERENCES `Chat_user` (`User_id`);
+
+-- Joined_pri
+ALTER TABLE `Joined_pri` ADD CONSTRAINT `user1` FOREIGN KEY `User1_id` REFERENCES `Chat_user` (`User_id`);
+ALTER TABLE `Joined_pri` ADD CONSTRAINT `user2` FOREIGN KEY `User2_id` REFERENCES `Chat_user` (`User_id`)
+
+-- Msg
+ALTER TABLE `Msg` ADD CONSTRAINT `the_sender` FOREIGN KEY `Msg_sender` REFERENCES `Chat_user` (`User_id`);
+
+-- Post
+ALTER TABLE `Post` ADD CONSTRAINT `sender` FOREIGN KEY `Post_sender` REFERENCES `Chat_user` (`User_id`);
+
+-- Post_like
+ALTER TABLE `Post_like` ADD CONSTRAINT `post` FOREIGN KEY `Post_id` REFERENCES `Post` (`Post_id`);
+ALTER TABLE `Post_like` ADD CONSTRAINT `user` FOREIGN KEY `User_id` REFERENCES `Chat_user` (`User_id`);
+
+-- Product
+ALTER TABLE `Product` ADD CONSTRAINT `userid` FOREIGN KEY `User_id` REFERENCES `Chat_user` (`User_id`);
 ```
 
 ## The Two Complex Queries
 
-### Query 1: Fetch all the public sessions of the user (including session ID and last message content)
+### Query 1: Keyword Search for chat user name, message content, and chat session name using the keyword ‘L’
+
+#### Query
 
 ```sql
-SELECT * 
-FROM Joined NATURAL JOIN Chat_session NATURAL JOIN 
-(
-  SELECT Session_id, Msg_Content FROM Contain c NATURAL JOIN Msg m NATURAL JOIN 
-  ( 
-    SELECT Session_id, MAX(Msg_time) AS MAXT 
-    FROM Joined 
-    NATURAL JOIN Chat_session NATURAL JOIN Contain NATURAL JOIN Msg 
-    WHERE User_id = ? 
-    GROUP BY Session_id
-  ) AS TEMP WHERE TEMP.Session_id = c.Session_id AND m.Msg_time = TEMP.MAXT 
-) AS Temp_table2
-
-WHERE User_id = {{user_id}}
-```
-
-#### Top 15 Outputs 
-
-![image-20220713231858680](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-07-14-041859.png)
-
-#### Indexed Performance
-
-```sql
--- '-> Table scan on <union temporary>  (cost=1.51..2.51 rows=2) (actual time=0.001..0.002 rows=5 loops=1)\n    -> Union materialize with deduplication  (cost=5.59..6.60 rows=2) (actual time=0.103..0.103 rows=5 loops=1)\n        -> Zero rows (Impossible WHERE noticed after reading const tables)  (cost=0.00..0.00 rows=0) (actual time=0.000..0.000 rows=0 loops=1)\n        -> Filter: (Msg.Msg_content like \'%is%\')  (cost=3.92 rows=2) (actual time=0.065..0.084 rows=5 loops=1)\n            -> Index lookup on Msg using the_sender (Msg_sender=14)  (cost=3.92 rows=15) (actual time=0.054..0.058 rows=15 loops=1)\n'
-
-
-DROP INDEX idx_Content ON Msg;
-DROP INDEX idx_User_name ON Chat_user;
-CREATE INDEX idx_Content ON Msg(Msg_content);
-CREATE INDEX idx_User_name ON Chat_user(User_name);
-
+-- CREATE INDEX idx_Content ON Chat_user(User_name);
+-- CREATE INDEX idx_Content ON Msg(Msg_content);
+-- CREATE INDEX idx_Content ON Chat_session(Chat_name);
 EXPLAIN ANALYZE
 (
-(SELECT Chat_user.User_name 
-FROM Chat_user 
-WHERE Chat_user.User_name  LIKE '%P%'  AND Chat_user.User_id= 12
-)
-UNION
-(
-SELECT Msg.Msg_content
-FROM Msg
-WHERE   Msg.Msg_content LIKE '%is%' AND Msg.Msg_sender= 14
-)
+	(
+	SELECT Chat_user.User_name 
+	FROM Chat_user 
+	WHERE Chat_user.User_name  LIKE  '%L%' 
+	)
+	UNION
+	(
+	SELECT Msg.Msg_content
+	FROM Msg
+	WHERE   Msg.Msg_content LIKE  '%L%'
+	)
+  UNION
+  (
+  SELECT Chat_session.Chat_name
+	FROM Chat_session
+	WHERE   Chat_session.Chat_name LIKE  '%L%'
+  )
 );
-
--- '-> Table scan on <union temporary>  (cost=1.51..2.51 rows=2) (actual time=0.001..0.002 rows=5 loops=1)\n    -> Union materialize with deduplication  (cost=5.59..6.60 rows=2) (actual time=0.086..0.087 rows=5 loops=1)\n        -> Zero rows (Impossible WHERE noticed after reading const tables)  (cost=0.00..0.00 rows=0) (actual time=0.000..0.000 rows=0 loops=1)\n        -> Filter: (Msg.Msg_content like \'%is%\')  (cost=3.92 rows=2) (actual time=0.051..0.070 rows=5 loops=1)\n            -> Index lookup on Msg using the_sender (Msg_sender=14)  (cost=3.92 rows=15) (actual time=0.041..0.045 rows=15 loops=1)\n'
 ```
 
-### Query 2: Use a keyword to find all the friends and messages related to this user
+#### Top 15 Results
+
+![image-20220803120656527](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-170656.png)
+
+#### NO ADDED INDEX
+
+Response:
+
+'-> Table scan on <union temporary>  (cost=0.03..4.20 rows=137) (actual time=0.001..0.018 rows=174 loops=1)\n    
+
+-> Union materialize with deduplication  (cost=141.45..145.62 rows=137) (actual time=2.062..2.094 rows=174 loops=1)\n        
+
+-> Filter: (Chat_user.User_name like \'%L%\')  (cost=11.25 rows=12) (actual time=0.052..0.131 rows=37 loops=1)\n            
+
+-> Index scan on Chat_user using User_name  (cost=11.25 rows=105) (actual time=0.044..0.102 rows=105 loops=1)\n        
+
+-> Filter: (Msg.Msg_content like \'%L%\')  (cost=106.25 rows=114) (actual time=0.036..1.067 rows=976 loops=1)\n            
+
+-> Table scan on Msg  (cost=106.25 rows=1025) (actual time=0.034..0.349 rows=1126 loops=1)\n        
+
+-> Filter: (Chat_session.Chat_name like \'%L%\')  (cost=10.25 rows=11) (actual time=0.021..0.064 rows=56 loops=1)\n            
+
+-> Table scan on Chat_session  (cost=10.25 rows=100) (actual time=0.020..0.033 rows=100 loops=1)\n'
+
+#### 1. ADDED INDEX ON User_name
+
+Response:
+
+'-> Table scan on <union temporary>  (cost=0.03..4.20 rows=137) (actual time=0.001..0.017 rows=174 loops=1)\n    
+
+-> Union materialize with deduplication  (cost=141.45..145.62 rows=137) (actual time=1.997..2.027 rows=174 loops=1)\n        
+
+-> Filter: (Chat_user.User_name like \'%L%\')  (cost=11.25 rows=12) (actual time=0.040..0.089 rows=37 loops=1)\n            
+
+-> Index scan on Chat_user using User_name  (cost=11.25 rows=105) (actual time=0.032..0.060 rows=105 loops=1)\n        
+
+-> Filter: (Msg.Msg_content like \'%L%\')  (cost=106.25 rows=114) (actual time=0.040..1.053 rows=976 loops=1)\n            
+
+-> Table scan on Msg  (cost=106.25 rows=1025) (actual time=0.038..0.359 rows=1126 loops=1)\n        
+
+-> Filter: (Chat_session.Chat_name like \'%L%\')  (cost=10.25 rows=11) (actual time=0.017..0.060 rows=56 loops=1)\n            
+
+-> Table scan on Chat_session  (cost=10.25 rows=100) (actual time=0.016..0.030 rows=100 loops=1)\n'
+
+#### 2. ADDED INDEX ON Msg_content
+
+
+Response:
+
+'-> Table scan on <union temporary>  (cost=0.03..4.20 rows=137) (actual time=0.002..0.019 rows=174 loops=1)\n    
+
+-> Union materialize with deduplication  (cost=141.45..145.62 rows=137) (actual time=2.704..2.737 rows=174 loops=1)\n        
+
+-> Filter: (Chat_user.User_name like \'%L%\')  (cost=11.25 rows=12) (actual time=0.075..0.116 rows=37 loops=1)\n            
+
+-> Index scan on Chat_user using User_name  (cost=11.25 rows=105) (actual time=0.064..0.084 rows=105 loops=1)\n        
+
+-> Filter: (Msg.Msg_content like \'%L%\')  (cost=106.25 rows=114) (actual time=0.061..1.321 rows=976 loops=1)\n            
+
+-> Index scan on Msg using idx_Content  (cost=106.25 rows=1025) (actual time=0.045..0.453 rows=1126 loops=1)\n        
+
+-> Filter: (Chat_session.Chat_name like \'%L%\')  (cost=10.25 rows=11) (actual time=0.032..0.078 rows=56 loops=1)\n            
+
+-> Table scan on Chat_session  (cost=10.25 rows=100) (actual time=0.029..0.043 rows=100 loops=1)\n'
+
+#### 3. ADDED INDEX ON Chat_name
+
+
+Response:
+
+'-> Table scan on <union temporary>  (cost=0.03..4.20 rows=137) (actual time=0.002..0.018 rows=174 loops=1)\n    
+
+-> Union materialize with deduplication  (cost=141.45..145.62 rows=137) (actual time=2.008..2.038 rows=174 loops=1)\n        
+
+-> Filter: (Chat_user.User_name like \'%L%\')  (cost=11.25 rows=12) (actual time=0.047..0.119 rows=37 loops=1)\n            
+
+-> Index scan on Chat_user using User_name  (cost=11.25 rows=105) (actual time=0.040..0.091 rows=105 loops=1)\n        
+
+-> Filter: (Msg.Msg_content like \'%L%\')  (cost=106.25 rows=114) (actual time=0.042..1.029 rows=976 loops=1)\n            
+
+-> Index scan on Msg using idx_Content  (cost=106.25 rows=1025) (actual time=0.026..0.342 rows=1126 loops=1)\n        
+
+-> Filter: (Chat_session.Chat_name like \'%L%\')  (cost=10.25 rows=11) (actual time=0.026..0.067 rows=56 loops=1)\n            
+
+-> Index scan on Chat_session using idx_Content  (cost=10.25 rows=100) (actual time=0.023..0.037 rows=100 loops=1)\n'
+
+#### Analysis
+
+Before adding indexes, the union and where operation needs to search nearly all the rows because it goes through the entire table scan.
+After adding the index on chat_name, the select query starts to use the index to search tuples on Chat_user, but it obviously does not decrease the execution time.
+
+After adding the index on Msg_content, the select query starts to use the index to search tuples on Msg, but it also does not decrease the execution time.
+After adding the index on Chat_name, the select query starts to use the index to search tuples on Chat_session, but it also does not decrease the execution time.
+
+Because we are adding indexes on varchar, the indexes contain a lot of characters. It can not actually decrease the execution time.
+
+### Query 2: Count the bottle and post message numbers in the past year
+
+#### Query
 
 ```sql
-SELECT * 
-FROM Post NATURAL JOIN Chat_user
-WHERE Post_sender = {{user_id}} OR Post_sender IN 
+-- CREATE INDEX Msg_time_index ON Msg(Msg_time);
+-- CREATE INDEX Publish_time_index ON Post(Publish_time);
+-- CREATE INDEX Bottle_time_index ON Bottle(Bottle_time);
+-- EXPLAIN
+-- (
+SELECT * FROM
 (
-  SELECT User1_id 
-  FROM Joined_pri 
-  WHERE User2_id = {{user_id}}
-) OR Post_sender IN 
-(
-  SELECT User2_id FROM Joined_pri WHERE User1_id = {{user_id}}
+ SELECT MT3 AS Year_Bottle, SUM(Bottle_Num) 
+    FROM (
+  SELECT Year(Bottle_time) AS MT3, COUNT(*) 
+        AS Bottle_Num 
+        FROM wechat.Bottle 
+        GROUP BY Bottle_time
+        ) 
+AS TEMP3 
+GROUP BY TEMP3.MT3
 )
-```
-
-#### Top 15 Outputs
-
-![image-20220713231917669](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-07-14-041918.png)
-
-#### Indexed Performance
-
-```sql
--- EXPLAIN ANALYZE
--- (
--- (
--- SELECT Chat_user.User_name 
--- FROM Chat_user 
--- WHERE Chat_user.User_name  LIKE  '%L%'
--- )
--- UNION
--- (
--- SELECT Msg.Msg_content
--- FROM Msg
--- WHERE   Msg.Msg_content LIKE  '%L%'
--- )
+AS TTT3
+LEFT OUTER JOIN
+(
+SELECT MT2 AS Year_Post, SUM(Post_Num) 
+FROM (
+ SELECT Year(Publish_time) AS MT2, COUNT(*) AS Post_Num 
+    FROM wechat.Post 
+    GROUP BY Publish_time
+    ) 
+AS TEMP1 
+GROUP BY TEMP1.MT2)
+AS TTT2
+ON Year_Bottle = Year_Post
+LEFT OUTER JOIN
+(
+SELECT MT AS Year_Msg, SUM(Msg_Num) 
+FROM (
+ SELECT Year(Msg_time) AS MT, COUNT(*) AS Msg_Num 
+    FROM wechat.Msg 
+    GROUP BY Msg_Time
+    ) 
+AS TEMP2 
+GROUP BY TEMP2.MT
+)
+AS TTT1
+ON Year_Bottle = Year_Msg
 -- );
--- '-> Table scan on <union temporary>  (cost=0.03..4.03 rows=122) (actual time=0.002..0.009 rows=87 loops=1)\n    -> Union materialize with deduplication  (cost=126.75..130.75 rows=122) (actual time=2.290..2.304 rows=87 loops=1)\n        -> Filter: (Chat_user.User_name like \'%L%\')  (cost=10.75 rows=11) (actual time=0.109..0.145 rows=38 loops=1)\n            -> Index scan on Chat_user using User_name  (cost=10.75 rows=100) (actual time=0.100..0.116 rows=100 loops=1)\n        -> Filter: (Msg.Msg_content like \'%It%\')  (cost=103.75 rows=111) (actual time=0.046..1.732 rows=511 loops=1)\n            -> Table scan on Msg  (cost=103.75 rows=1000) (actual time=0.044..0.325 rows=1000 loops=1)\n'
-
-DROP INDEX idx_Content ON Msg;
-CREATE INDEX idx_Content ON Msg(Msg_content);
-EXPLAIN ANALYZE
-(
-(
-SELECT Chat_user.User_name 
-FROM Chat_user 
-WHERE Chat_user.User_name  LIKE   '%L%' 
-)
-UNION
-(
-SELECT Msg.Msg_content
-FROM Msg
-WHERE   Msg.Msg_content LIKE  '%L%'
-)
-);
--- '-> Table scan on <union temporary>  (cost=0.03..4.03 rows=122) (actual time=0.002..0.010 rows=87 loops=1)\n    -> Union materialize with deduplication  (cost=126.75..130.75 rows=122) (actual time=2.120..2.136 rows=87 loops=1)\n        -> Filter: (Chat_user.User_name like \'%L%\')  (cost=10.75 rows=11) (actual time=0.047..0.092 rows=38 loops=1)\n            -> Index scan on Chat_user using User_name  (cost=10.75 rows=100) (actual time=0.040..0.060 rows=100 loops=1)\n        -> Filter: (Msg.Msg_content like \'%It%\')  (cost=103.75 rows=111) (actual time=0.032..1.636 rows=511 loops=1)\n            -> Index scan on Msg using idx_Content  (cost=103.75 rows=1000) (actual time=0.031..0.264 rows=1000 loops=1)\n'
 ```
 
-## Indexing Performance Analysis
+#### Top 15 Results
 
-We performed the performance analysis of the two queries and saw the indexed one with better performance. For the first query it improves by 1/4, while for the second query it improves by 1/5.
+![image-20220803123952015](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-173952.png)
 
-We add an index on Msg_content, and the new execution time will reduce by a quarter of the time it would have taken. Then we add a new index on User_name, and similarly, the new execution time will reduce by a quarter of the previous time. In conclusion, if we add indexes to the keys we use in the SQL queries, the execution time will be reduced.
-In our procedure, User_id and Mes_sender have already been set to indexes because they are either primary keys or foreign keys. It is better to keep these indexes (which may not be able to be deleted).
+#### No Added Index
 
+Response:
+
+'-> Nested loop left join  (cost=2784.12 rows=0) (actual time=7.366..7.375 rows=5 loops=1)\n    
+
+-> Table scan on TTT3  (cost=2.50..2.50 rows=0) (actual time=0.000..0.001 rows=5 loops=1)\n        
+
+-> Materialize  (cost=2.50..2.50 rows=0) (actual time=2.467..2.469 rows=5 loops=1)\n            
+
+-> Table scan on <temporary>  (actual time=0.000..0.001 rows=5 loops=1)\n                
+
+-> Aggregate using temporary table  (actual time=2.458..2.459 rows=5 loops=1)\n                    
+
+-> Table scan on TEMP3  (cost=2.50..2.50 rows=0) (actual time=0.000..0.053 rows=803 loops=1)\n                        
+
+-> Materialize  (cost=2.50..2.50 rows=0) (actual time=2.059..2.178 rows=803 loops=1)\n                            
+
+-> Table scan on <temporary>  (actual time=0.001..0.084 rows=803 loops=1)\n                                
+
+-> Aggregate using temporary table  (actual time=1.817..1.967 rows=803 loops=1)\n                                    
+
+-> Table scan on Bottle  (cost=112.20 rows=1107) (actual time=0.025..0.694 rows=1107 loops=1)\n    
+
+-> Nested loop left join  (cost=27979.82 rows=0) (actual time=0.980..0.980 rows=0 loops=5)\n        
+
+-> Index lookup on TTT2 using <auto_key0> (Year_Post=TTT3.Year_Bottle)  (actual time=0.001..0.001 rows=0 loops=5)\n            
+
+-> Materialize  (cost=0.00..0.00 rows=0) (actual time=2.063..2.064 rows=2 loops=1)\n                
+
+-> Table scan on <temporary>  (actual time=0.000..0.000 rows=2 loops=1)\n                    
+
+-> Aggregate using temporary table  (actual time=2.051..2.052 rows=2 loops=1)\n                        
+
+-> Table scan on TEMP1  (cost=2.50..2.50 rows=0) (actual time=0.000..0.061 rows=981 loops=1)\n                            
+
+-> Materialize  (cost=2.50..2.50 rows=0) (actual time=1.579..1.720 rows=981 loops=1)\n                                
+
+-> Table scan on <temporary>  (actual time=0.000..0.089 rows=981 loops=1)\n                                    
+
+-> Aggregate using temporary table  (actual time=1.297..1.466 rows=981 loops=1)\n                                        
+
+-> Table scan on Post  (cost=101.25 rows=985) (actual time=0.039..0.352 rows=1045 loops=1)\n        
+
+-> Filter: (TTT1.Year_Msg = TTT3.Year_Bottle)  (cost=0.25..2.51 rows=10) (actual time=1.417..1.417 rows=0 loops=2)\n            
+
+-> Index lookup on TTT1 using <auto_key0> (Year_Msg=TTT2.Year_Post)  (actual time=0.001..0.001 rows=0 loops=2)\n                
+
+-> Materialize  (cost=0.00..0.00 rows=0) (actual time=2.830..2.831 rows=4 loops=1)\n                    
+
+-> Table scan on <temporary>  (actual time=0.000..0.000 rows=4 loops=1)\n                        
+
+-> Aggregate using temporary table  (actual time=2.815..2.815 rows=4 loops=1)\n                            
+
+-> Table scan on TEMP2  (cost=2.50..2.50 rows=0) (actual time=0.000..0.068 rows=1080 loops=1)\n                                
+
+-> Materialize  (cost=2.50..2.50 rows=0) (actual time=2.296..2.452 rows=1080 loops=1)\n                                    
+
+-> Table scan on <temporary>  (actual time=0.001..0.122 rows=1080 loops=1)\n                                        
+
+-> Aggregate using temporary table  (actual time=1.952..2.162 rows=1080 loops=1)\n                                            
+
+-> Table scan on Msg  (cost=106.35 rows=1026) (actual time=0.008..0.731 rows=1127 loops=1)\n'
+
+#### 1. ADDED INDEX ON Msg_time
+
+Response:
+
+'-> Nested loop left join  (cost=2784.12 rows=0) (actual time=7.951..7.962 rows=5 loops=1)\n   
+-> Table scan on TTT3  (cost=2.50..2.50 rows=0) (actual time=0.000..0.002 rows=5 loops=1)\n        
+-> Materialize  (cost=2.50..2.50 rows=0) (actual time=2.505..2.507 rows=5 loops=1)\n            
+-> Table scan on <temporary>  (actual time=0.001..0.001 rows=5 loops=1)\n                
+-> Aggregate using temporary table  (actual time=2.483..2.484 rows=5 loops=1)\n                    
+-> Table scan on TEMP3  (cost=2.50..2.50 rows=0) (actual time=0.001..0.061 rows=803 loops=1)\n                        
+-> Materialize  (cost=2.50..2.50 rows=0) (actual time=1.954..2.089 rows=803 loops=1)\n                            
+-> Table scan on <temporary>  (actual time=0.001..0.108 rows=803 loops=1)\n                                
+-> Aggregate using temporary table  (actual time=1.621..1.818 rows=803 loops=1)\n                                    
+-> Table scan on Bottle  (cost=112.20 rows=1107) (actual time=0.053..0.525 rows=1107 loops=1)\n    
+-> Nested loop left join  (cost=27990.05 rows=0) (actual time=1.090..1.090 rows=0 loops=5)\n        
+-> Index lookup on TTT2 using <auto_key0> (Year_Post=TTT3.Year_Bottle)  (actual time=0.001..0.001 rows=0 loops=5)\n            
+-> Materialize  (cost=0.00..0.00 rows=0) (actual time=3.133..3.134 rows=2 loops=1)\n                
+-> Table scan on <temporary>  (actual time=0.000..0.000 rows=2 loops=1)\n                    
+-> Aggregate using temporary table  (actual time=3.107..3.108 rows=2 loops=1)\n                        
+-> Table scan on TEMP1  (cost=2.50..2.50 rows=0) (actual time=0.001..0.071 rows=981 loops=1)\n                            
+-> Materialize  (cost=2.50..2.50 rows=0) (actual time=2.524..2.685 rows=981 loops=1)\n                                
+-> Table scan on <temporary>  (actual time=0.003..0.223 rows=981 loops=1)\n                                    
+-> Aggregate using temporary table  (actual time=2.037..2.354 rows=981 loops=1)\n                                        
+-> Table scan on Post  (cost=101.25 rows=985) (actual time=0.072..0.542 rows=1045 loops=1)\n        
+-> Filter: (TTT1.Year_Msg = TTT3.Year_Bottle)  (cost=0.25..2.52 rows=10) (actual time=1.155..1.155 rows=0 loops=2)\n            
+-> Index lookup on TTT1 using <auto_key0> (Year_Msg=TTT2.Year_Post)  (actual time=0.001..0.002 rows=0 loops=2)\n                
+-> Materialize  (cost=0.00..0.00 rows=0) (actual time=2.306..2.307 rows=4 loops=1)\n                    
+-> Table scan on <temporary>  (actual time=0.000..0.001 rows=4 loops=1)\n                        
+-> Aggregate using temporary table  (actual time=2.294..2.294 rows=4 loops=1)\n                            
+-> Table scan on TEMP2  (cost=0.01..16.59 rows=1127) (actual time=0.001..0.094 rows=1080 loops=1)\n                                
+-> Materialize  (cost=341.86..358.44 rows=1127) (actual time=1.643..1.837 rows=1080 loops=1)\n                                    
+-> Group aggregate: count(0)  (cost=229.15 rows=1127) (actual time=0.091..1.043 rows=1080 loops=1)\n                                        
+-> Index scan on Msg using Msg_time_index  (cost=116.45 rows=1127) (actual time=0.078..0.422 rows=1127 loops=1)\n'
+
+#### 2. ADDED INDEX ON Publish_time
+
+
+Response:
+
+'-> Nested loop left join  (cost=2784.12 rows=0) (actual time=6.396..6.409 rows=5 loops=1)\n    
+-> Table scan on TTT3  (cost=2.50..2.50 rows=0) (actual time=0.001..0.002 rows=5 loops=1)\n        
+-> Materialize  (cost=2.50..2.50 rows=0) (actual time=2.180..2.183 rows=5 loops=1)\n            
+-> Table scan on <temporary>  (actual time=0.001..0.002 rows=5 loops=1)\n                
+-> Aggregate using temporary table  (actual time=2.163..2.164 rows=5 loops=1)\n                    
+-> Table scan on TEMP3  (cost=2.50..2.50 rows=0) (actual time=0.000..0.131 rows=803 loops=1)\n                        
+-> Materialize  (cost=2.50..2.50 rows=0) (actual time=1.618..1.820 rows=803 loops=1)\n                            
+-> Table scan on <temporary>  (actual time=0.001..0.076 rows=803 loops=1)\n                                
+-> Aggregate using temporary table  (actual time=1.382..1.524 rows=803 loops=1)\n                                    
+-> Table scan on Bottle  (cost=112.20 rows=1107) (actual time=0.052..0.430 rows=1107 loops=1)\n    
+-> Nested loop left join  (cost=27990.05 rows=0) (actual time=0.843..0.844 rows=0 loops=5)\n        
+-> Index lookup on TTT2 using <auto_key0> (Year_Post=TTT3.Year_Bottle)  (actual time=0.001..0.002 rows=0 loops=5)\n            
+-> Materialize  (cost=0.00..0.00 rows=0) (actual time=1.900..1.902 rows=2 loops=1)\n                
+-> Table scan on <temporary>  (actual time=0.000..0.000 rows=2 loops=1)\n                    
+-> Aggregate using temporary table  (actual time=1.858..1.858 rows=2 loops=1)\n                        
+-> Table scan on TEMP1  (cost=0.02..14.81 rows=985) (actual time=0.001..0.069 rows=981 loops=1)\n                            
+-> Materialize  (cost=298.27..313.06 rows=985) (actual time=1.342..1.502 rows=981 loops=1)\n                                
+-> Group aggregate: count(0)  (cost=199.75 rows=985) (actual time=0.099..0.875 rows=981 loops=1)\n                                    
+-> Index scan on Post using Publish_time_index  (cost=101.25 rows=985) (actual time=0.084..0.383 rows=1045 loops=1)\n        
+-> Filter: (TTT1.Year_Msg = TTT3.Year_Bottle)  (cost=0.25..2.52 rows=10) (actual time=1.156..1.156 rows=0 loops=2)\n            
+-> Index lookup on TTT1 using <auto_key0> (Year_Msg=TTT2.Year_Post)  (actual time=0.002..0.002 rows=0 loops=2)\n                
+-> Materialize  (cost=0.00..0.00 rows=0) (actual time=2.308..2.309 rows=4 loops=1)\n                    
+-> Table scan on <temporary>  (actual time=0.000..0.001 rows=4 loops=1)\n                        
+-> Aggregate using temporary table  (actual time=2.291..2.292 rows=4 loops=1)\n                            
+-> Table scan on TEMP2  (cost=0.01..16.59 rows=1127) (actual time=0.002..0.077 rows=1080 loops=1)\n                                
+-> Materialize  (cost=341.86..358.44 rows=1127) (actual time=1.715..1.883 rows=1080 loops=1)\n                                    
+-> Group aggregate: count(0)  (cost=229.15 rows=1127) (actual time=0.045..1.041 rows=1080 loops=1)\n                                        
+-> Index scan on Msg using Msg_time_index  (cost=116.45 rows=1127) (actual time=0.041..0.433 rows=1127 loops=1)\n'
+
+#### 3. ADDED INDEX ON Bottle_time
+
+
+Response:
+
+'-> Nested loop left join  (cost=2784.12 rows=0) (actual time=5.378..5.388 rows=5 loops=1)\n    
+-> Table scan on TTT3  (cost=2.50..2.50 rows=0) (actual time=0.000..0.001 rows=5 loops=1)\n        
+-> Materialize  (cost=2.50..2.50 rows=0) (actual time=1.544..1.545 rows=5 loops=1)\n            
+-> Table scan on <temporary>  (actual time=0.000..0.001 rows=5 loops=1)\n                
+-> Aggregate using temporary table  (actual time=1.528..1.528 rows=5 loops=1)\n                    
+-> Table scan on TEMP3  (cost=0.01..16.34 rows=1107) (actual time=0.001..0.054 rows=803 loops=1)\n                        
+-> Materialize  (cost=333.61..349.94 rows=1107) (actual time=1.119..1.238 rows=803 loops=1)\n                            
+-> Group aggregate: count(0)  (cost=222.90 rows=1107) (actual time=0.052..0.792 rows=803 loops=1)\n                                
+-> Index scan on Bottle using Bottle_time_index  (cost=112.20 rows=1107) (actual time=0.044..0.356 rows=1107 loops=1)\n    
+-> Nested loop left join  (cost=27990.05 rows=0) (actual time=0.768..0.768 rows=0 loops=5)\n        
+-> Index lookup on TTT2 using <auto_key0> (Year_Post=TTT3.Year_Bottle)  (actual time=0.001..0.001 rows=0 loops=5)\n            
+-> Materialize  (cost=0.00..0.00 rows=0) (actual time=1.741..1.743 rows=2 loops=1)\n                
+-> Table scan on <temporary>  (actual time=0.000..0.000 rows=2 loops=1)\n                    
+-> Aggregate using temporary table  (actual time=1.731..1.731 rows=2 loops=1)\n                        
+-> Table scan on TEMP1  (cost=0.02..14.81 rows=985) (actual time=0.001..0.066 rows=981 loops=1)\n                            
+-> Materialize  (cost=298.27..313.06 rows=985) (actual time=1.234..1.381 rows=981 loops=1)\n                                
+-> Group aggregate: count(0)  (cost=199.75 rows=985) (actual time=0.041..0.818 rows=981 loops=1)\n                                    
+-> Index scan on Post using Publish_time_index  (cost=101.25 rows=985) (actual time=0.039..0.345 rows=1045 loops=1)\n        
+-> Filter: (TTT1.Year_Msg = TTT3.Year_Bottle)  (cost=0.25..2.52 rows=10) (actual time=1.046..1.047 rows=0 loops=2)\n            
+-> Index lookup on TTT1 using <auto_key0> (Year_Msg=TTT2.Year_Post)  (actual time=0.001..0.001 rows=0 loops=2)\n                
+-> Materialize  (cost=0.00..0.00 rows=0) (actual time=2.091..2.091 rows=4 loops=1)\n                    
+-> Table scan on <temporary>  (actual time=0.000..0.000 rows=4 loops=1)\n                        
+-> Aggregate using temporary table  (actual time=2.082..2.083 rows=4 loops=1)\n                            
+-> Table scan on TEMP2  (cost=0.01..16.59 rows=1127) (actual time=0.001..0.072 rows=1080 loops=1)\n                                
+-> Materialize  (cost=341.86..358.44 rows=1127) (actual time=1.540..1.708 rows=1080 loops=1)\n                                    
+-> Group aggregate: count(0)  (cost=229.15 rows=1127) (actual time=0.035..0.964 rows=1080 loops=1)\n                                        
+-> Index scan on Msg using Msg_time_index  (cost=116.45 rows=1127) (actual time=0.032..0.395 rows=1127 loops=1)\n'
+
+#### Analysis
+
+Compared with no index, when we add a index on Msg_time, the nested loop left join time becomes slower, actual time from 7.366..7.375 to 7.951..7.962. This is because nested loop left did not use index, but index will occupy more space which consume more time to execute the join operation.
+
+However, when we Aggregate using temporary table, the actual time reduce from 2.815..2.815 to 1.621..1.818 which is much faster than using no index. This is because index can help accelerate the process of searching.
+
+By contrast with different index. Adding index on Msg_time is faster than in Publish_time (1.621..1.818 and 2.291..2.292 respectively). This is because Aggregate using temporary table use more of attributes in Msg Table. So, index can have a more influence on accelerating the process.
