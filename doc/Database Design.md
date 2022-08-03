@@ -307,7 +307,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 ```
 
-## 2 Complex Queries
+## The Two Complex Queries
 
 ### Query 1: Fetch all the public sessions of the user (including session ID and last message content)
 
@@ -335,19 +335,6 @@ WHERE User_id = {{user_id}}
 #### Indexed Performance
 
 ```sql
--- EXPLAIN ANALYZE
--- (
--- (SELECT Chat_user.User_name 
--- FROM Chat_user 
--- WHERE Chat_user.User_name  LIKE '%P%'  AND Chat_user.User_id= 12
--- )
--- UNION
--- (
--- SELECT Msg.Msg_content
--- FROM Msg
--- WHERE   Msg.Msg_content LIKE '%is%' AND Msg.Msg_sender= 14
--- )
--- );
 -- '-> Table scan on <union temporary>  (cost=1.51..2.51 rows=2) (actual time=0.001..0.002 rows=5 loops=1)\n    -> Union materialize with deduplication  (cost=5.59..6.60 rows=2) (actual time=0.103..0.103 rows=5 loops=1)\n        -> Zero rows (Impossible WHERE noticed after reading const tables)  (cost=0.00..0.00 rows=0) (actual time=0.000..0.000 rows=0 loops=1)\n        -> Filter: (Msg.Msg_content like \'%is%\')  (cost=3.92 rows=2) (actual time=0.065..0.084 rows=5 loops=1)\n            -> Index lookup on Msg using the_sender (Msg_sender=14)  (cost=3.92 rows=15) (actual time=0.054..0.058 rows=15 loops=1)\n'
 
 

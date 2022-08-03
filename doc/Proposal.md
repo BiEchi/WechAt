@@ -15,7 +15,7 @@ We decide to inject our dataset using randomly generated data from https://gener
 
 ![UML](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-013529.png)
 
-## Creativity, Application And Usefulness
+## Creativity, Functions, Application And Usefulness
 
 This course project is the sub-project of **IntLife**, which has a DBMS UML graph below:
 
@@ -140,37 +140,36 @@ For your convenience, we include the same UML graph here:
 ## Dataset Schema 
 
 ```sql
-Admin(Column1:user_id, Column2: session_id) [PK], Column3: user_id [FK to chat_user.column], Column4: session_id [FK to chat_session.column], Column5:time_begin, Column6:time_end)
+Admin(User_id:INT [PK], Session_id:INT [FK to Chat_session.Session_id], Time_begin:Date, Time_end:Date)
 
-Join (Column1:user_id, Column2:session_id) [PK], Column3: user_id [FK to chat_user.column], Column4: session_id [FK to chat_session.column], Column5:time_begin, Column6:time_end)
+Append_msg(Snippet_id:int [PK], Msg_id:int [FK to Msg.Msg_id])
 
-Friendship (Column1:user_id, Column2:msg_id) [PK], Column3:user_id [FK to user_chat.column], Column4:msg_id [FK to msg.column], Column5:user_id1,Column6:user_id2, Column7:Pending_flag, Column8:blacklist_flag )
+Bottle(Bottle_id:INT [PK], Bottle_time:VARCHAR(255), User_id_from:INT [FK to User.User_id], User_id_to:INT [FK to User.User_id], Status:INT, Bottle_content:VARCHAR(255))
 
-Link(Column1:product_id, Column2:snippet _id) [PK], Column3:snippet_id [FK to snippet.column], Column4: user _id [FK to chat_user])
+Chat_pri_session(Session_pri_id:INT [PK], Pending_flag:VARCHAR(5), Blacklist_flag:VARCHAR(5))
 
-Post((Column1:post_id) [PK], Column2: post_sender [FK to chat_user.column], Column3:post_content, Column4:publish time)
+Chat_session(Session_id:INT [PK], Chat_name:VARCHAR(30))
 
-Bottle((Column1:bottle_id) [PK], Column2: user_id2 [FK to chat_user.column], Column3: user_id2 [FK to chat_user.column], Column3:status, Column4:content, Column5:time)
+Chat_user(User_id:INT [PK], User_name:VARCHAR(255), User_password:VARCHAR(255), Avator:VARCHAR(255), Email:VARCHAR(255), Chatbot_flag:INT, Status:VARCHAR(6))
 
-Sell(Column1:product_id, Column2:user _id) [PK], Column3:product_id [FK to product.column], Column4: user _id [FK to chat_user])
-msg(Column1:msg_id [PK], Column2: Session_id [FK to chat_session.column], Column3: Session_pri_id [FK to friendship.column], Column4: Msg_time, Column5: Msg_status, Columns6: Msg_sender [FK to Chat_user.column], Column7: Msg_content)
+Contain(Msg_id:INT [PK], Session_id:INT [PK], [FK to Chat_session.Session_id], [FK to Msg.Msg_id])
 
-Append_msg(Column1:snippet_id, Column2:msg _id) [PK], Column3:snippet_id [FK to snippet.column], Column4: msgid [FK to Msg])
+Contain_pri(Msg_id:INT [PK], Session_pri_id:INT [PK])
 
-Post_like(Column1:user_id, Column2:post _id) [PK], Column3:user_id [FK to chat_user.column], Column4: post_id [FK to Msg.column],columen5:Like_black_flag,column6:like_amount)
+Joined(User_id:INT [PK], Session_id:INT [PK], Time_begin:VARCHAR(255), Time_end:VARCHAR(255))
+
+Joined_pri(User1_id:INT [PK], User2_id:INT [PK], Session_pri_id:INT, Time_begin:VARCHAR(255), Time_end:VARCHAR(255))
+
+Msg(Msg_id: INT [PK], Msg_time: TEXT, Msg_status: VARCHAR(7), Msg_sender: INT [FK to Chat_user.User_id], Msg_content: VARCHAR(265))
+
+Post(Post_id: INT [PK], Post_sender: INT [FK to Chat_user.User_id], Publish_time: VARCHAR(255), Post_content: VARCHAR(12000))
+
+Post_Like(User_id: INT [PK][FK to Chat_user.User_id], Post_id: INT [PK][FK to Post.Post_id], Like_amount: INT)
+
+Product(Product_id:INT [PK], User_id:INT [FK to Chat_user.User_id], Name:VARCHAR(255), Price:INT, Photo_url:VARCHAR(255))
+
+Snippet(Snippet_id:INT [PK], Snippet_link:VARCHAR(255), Snippet_content:VARCHAR(12000))
 ```
-
-## Functionalities
-
-> What are the basic functions of your web application? (What can users of this website do? Which simple and complex features are there?)
-
-| Function | Details | 
-| --- | --- | 
-| login | centralized server, encryption and decryption, feedback prompts, mallicious detection. |
-| groupchat | groupchat and private chat, invite a friend to the groupchat, admins can delete group members, send a message. |
-| friends | friend list, blacklist |
-| keyword search | `LIKE '%keyword%'` |
-| Moments | share highlights |
 
 ## UI Mockup
 
