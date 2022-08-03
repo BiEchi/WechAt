@@ -16,6 +16,12 @@
 		</view>
 		
 		<!-- view for product seller -->
+		<view v-if="rangeType==1"><img  class="range_logo" src="/static/cheap.png" alt="cheap" /></view>
+		<view v-if="rangeType==2"><img  class="range_logo" src="/static/fair.png" alt="fair" /></view> 
+		<view v-if="rangeType==3"><img  class="range_logo" src="/static/high.png" alt="high" /></view> 
+		<view v-if="rangeType==4"><img  class="range_logo" src="/static/expensive.png" alt="expensive" /></view> 
+		
+		<!-- view for product seller -->
 	<view v-if="credit==0"><img  class="level_logo" src="/static/level1.png" alt="img1" /></view>
 	<view v-if="credit==1"><img  class="level_logo" src="/static/level2.png" alt="img1" /></view> 
 	<view v-if="credit==2"><img  class="level_logo" src="/static/level3.png" alt="img1" /></view> 
@@ -52,7 +58,11 @@
 			credit:{
 				type: Number,
 				default: 0,
-				},
+			},
+			rangeType:{
+				type: Number,
+				default: 0,
+			},
 		},
 		
 		onLoad() {
@@ -168,3 +178,11 @@
 		margin-right: auto;
 		margin-bottom: auto;
 	}
+	.range_logo {
+			height: 20rpx;
+			width: 20rpx;
+			margin-top: 0rpx;
+			margin-left: 0 rpx;
+			margin-right: auto;
+			margin-bottom: auto;
+		}
