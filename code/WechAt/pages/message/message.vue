@@ -111,6 +111,8 @@ export default {
               arguments: [current_id, this.Session_id_num],
             },
             success: (res) => {
+				this.Msg_content=""
+				this.find_msg();
               console.log(res.result);
             },
             fail: (err) => {
@@ -123,10 +125,10 @@ export default {
         },
       });
 		// refresh the message list page
-		this.find_msg()
-	 	uni.navigateTo({
-        	url: "../message/message?session_id=" + this.Session_id_num,
-      	});
+		
+	 	// uni.navigateTo({
+   //      	url: "../message/message?session_id=" + this.Session_id_num,
+   //    	});
     },
     find_msg() {
       this.my_user_id = getApp().globalData.user_id;
@@ -209,6 +211,8 @@ export default {
           },
         });
       }else{
+		   this.Msg_content=this.Msg_sent
+		  console.log("No id in textttttttttttttttttttttttttttttttttttttttttt")
 		  this.send();
 	  }
     },
