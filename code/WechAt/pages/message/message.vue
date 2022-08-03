@@ -38,7 +38,7 @@
         v-model="Msg_sent"
         placeholder="please input message"
       />
-      <button class="bt" @click="send" type="submit">send</button>
+      <button class="bt" @click="check_snippet" type="submit">send</button>
     </view>
 	<view v-if="level==1" class="level1png"></view>
 	<view v-if="level==2" class="level2png"></view>
@@ -86,9 +86,8 @@ export default {
     send() {
       this.Msg_time = new Date();
       this.my_user_id = getApp().globalData.user_id;
-      this.check_snippet();
-      this.Msg_content =
-        this.Msg_sent + this.snippet_url + this.snippet_content;
+  
+     
       uniCloud.callFunction({
         name: "query",
         data: {
@@ -112,6 +111,8 @@ export default {
               arguments: [current_id, this.Session_id_num],
             },
             success: (res) => {
+				this.Msg_content=""
+				this.find_msg();
               console.log(res.result);
             },
             fail: (err) => {
@@ -124,10 +125,10 @@ export default {
         },
       });
 		// refresh the message list page
-		this.find_msg()
-	 	uni.navigateTo({
-        	url: "../message/message?session_id=" + this.Session_id_num,
-      	});
+		
+	 	// uni.navigateTo({
+   //      	url: "../message/message?session_id=" + this.Session_id_num,
+   //    	});
     },
     find_msg() {
       this.my_user_id = getApp().globalData.user_id;
@@ -174,18 +175,14 @@ export default {
       var w = 0;
       var i = 0;
       for (i = 0; i < arr.length; i++) {
-        if (arr[i].indexOf("https://") != -1) {
-          this.keyw = arr[i];
-          w = 0;
-          break;
-        }
+      
         if (arr[i].indexOf("product_id://") != -1) {
           this.keyw = arr[i].replace("product_id://", "");
           w = 1;
           break;
         }
       }
-      if (keyw != "9999" && w == 1) {
+      if ( w == 1) {
         uniCloud.callFunction({
           name: "query",
           data: {
@@ -198,10 +195,13 @@ export default {
             // this.snippet_url="pages/product/product"
             this.snippet_url = "pages/product/product" + String(this.keyw);
             this.snippet_content =
-              "This items name is" +
-              String(res.result[0]["name"]) +
-              "and its price is" +
-              String(res.result[0]["price"]);
+              " This items name is " +
+              String(res.result[0]["Name"]) +
+              " and its price is " +
+              String(res.result[0]["Price"]);
+			  this.Msg_content =
+			    this.Msg_sent + this.snippet_url + this.snippet_content;
+				this.add_snippet();
             // this.add_snippet()
           },
           fail: (err) => {
@@ -210,7 +210,11 @@ export default {
             console.log(err);
           },
         });
-      }
+      }else{
+		   this.Msg_content=this.Msg_sent
+		  console.log("No id in textttttttttttttttttttttttttttttttttttttttttt")
+		  this.send();
+	  }
     },
     add_snippet() {
       console.log(this.snippet_url);
@@ -222,6 +226,7 @@ export default {
           arguments: [this.snippet_url, this.snippet_content],
         },
         success: (res) => {
+			this.send();
           console.log("success add");
           // console.log(res.result[0])
         },
