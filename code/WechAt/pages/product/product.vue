@@ -11,6 +11,44 @@
 			<input class="search-input" v-model="search_content" placeholder="Input keywords here" />
 		</view>
 		<!-- draw a solid black line -->
+		<div class="custom-select">
+		<div>
+		  <select class="custom-select1">
+		    <option value="0">Select car:</option>
+		    <option value="1">Audi</option>
+		    <option value="2">BMW</option>
+		    <option value="3">Citroen</option>
+		    <option value="4">Ford</option>
+		    <option value="5">Honda</option>
+		    <option value="6">Jaguar</option>
+		    <option value="7">Land Rover</option>
+		    <option value="8">Mercedes</option>
+		    <option value="9">Mini</option>
+		    <option value="10">Nissan</option>
+		    <option value="11">Toyota</option>
+		    <option value="12">Volvo</option>
+		  </select>
+		</div>
+		<div>
+		  <select class="custom-select1">
+		    <option value="0">Select car:</option>
+		    <option value="1">Audi</option>
+		    <option value="2">BMW</option>
+		    <option value="3">Citroen</option>
+		    <option value="4">Ford</option>
+		    <option value="5">Honda</option>
+		    <option value="6">Jaguar</option>
+		    <option value="7">Land Rover</option>
+		    <option value="8">Mercedes</option>
+		    <option value="9">Mini</option>
+		    <option value="10">Nissan</option>
+		    <option value="11">Toyota</option>
+		    <option value="12">Volvo</option>
+		  </select>
+		</div>
+		<!-- HTML !-->
+		<button class="button-55" role="button">Button 55</button>
+		</div>
 		<view class="solidline"></view>
 		<!-- make a list of the contents using v-for and content_list -->
 		<view v-for=" item in items" :key="item['Product_id']">
@@ -158,5 +196,66 @@
 		display: flex;
 		justify-content: center;
 	}
+	
+	.custom-select {
+		display: flex;
+	}
+	
+	.custom-select1 {
+		font-size: 13px;
+		  font-weight: 200;
+		  letter-spacing: 1px;
+		  padding: 5px 4px 5px;
+		  outline: 0;
+		  border: 0.2px solid black;
+		  cursor: pointer;
+		  position: relative;
+		  background-color: rgba(0, 0, 0, 0);
+		  user-select: none;
+		  -webkit-user-select: none;
+		  touch-action: manipulation;
+		background-color: antiquewhite;
+	}
 
+/* CSS */
+.button-55 {
+  align-self: center;
+  background-color: #fff;
+  background-image: none;
+  background-position: 0 90%;
+  background-repeat: repeat no-repeat;
+  background-size: 4px 3px;
+  border-radius: 15px 225px 255px 15px 15px 255px 225px 15px;
+  border-style: solid;
+  border-width: 2px;
+  box-shadow: rgba(0, 0, 0, .2) 15px 28px 25px -18px;
+  box-sizing: border-box;
+  color: #41403e;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Neucha, sans-serif;
+  font-size: 1rem;
+  line-height: 23px;
+  outline: none;
+  padding: .75rem;
+  text-decoration: none;
+  transition: all 235ms ease-in-out;
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-55:hover {
+  box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
+  transform: translate3d(0, 2px, 0);
+}
+
+.button-55:focus {
+  box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
+}
+	
 </style>
