@@ -13,47 +13,36 @@
 		<!-- draw a solid black line -->
 		<div class="custom-select">
 		<div>
-		  <select class="custom-select1">
-		    <option value="0">Select car:</option>
-		    <option value="1">Audi</option>
-		    <option value="2">BMW</option>
-		    <option value="3">Citroen</option>
-		    <option value="4">Ford</option>
-		    <option value="5">Honda</option>
-		    <option value="6">Jaguar</option>
-		    <option value="7">Land Rover</option>
-		    <option value="8">Mercedes</option>
-		    <option value="9">Mini</option>
-		    <option value="10">Nissan</option>
-		    <option value="11">Toyota</option>
-		    <option value="12">Volvo</option>
+		  <select class="custom-select1" v-model="lowerB">
+		    <option value="0">0</option>
+		    <option value="1">30</option>
+		    <option value="2">60</option>
+		    <option value="3">90</option>
+		    <option value="4">120</option>
+		    <option value="5">150</option>
 		  </select>
 		</div>
 		<div>
-		  <select class="custom-select1">
-		    <option value="0">Select car:</option>
-		    <option value="1">Audi</option>
-		    <option value="2">BMW</option>
-		    <option value="3">Citroen</option>
-		    <option value="4">Ford</option>
-		    <option value="5">Honda</option>
-		    <option value="6">Jaguar</option>
-		    <option value="7">Land Rover</option>
-		    <option value="8">Mercedes</option>
-		    <option value="9">Mini</option>
-		    <option value="10">Nissan</option>
-		    <option value="11">Toyota</option>
-		    <option value="12">Volvo</option>
+		  <select class="custom-select1"  v-model="upperB">
+		    <option value="0">30</option>
+		    <option value="1">60</option>
+		    <option value="2">90</option>
+		    <option value="3">120</option>
+		    <option value="4">150</option>
+			<option value="5">~</option>
 		  </select>
 		</div>
 		<!-- HTML !-->
-		<button class="button-55" role="button">Button 55</button>
+		<button class="button-55" role="button" @click="getProductByRange">Search Range</button>
 		</div>
 		<view class="solidline"></view>
 		<!-- make a list of the contents using v-for and content_list -->
-		<view v-for=" item in items" :key="item['Product_id']">
-			
-			<productItem :productName="item['Name']" :productPrice="item['Price']" :productSeller="item['User_id']" :productId="item['Product_id']":credit="item['RATES']"></productItem>
+		<view v-if="if_search_rates" v-for=" item in items" :key="item['Product_id']">
+			<text>Average price among the user is: {{item['Average_Price']}}</text>
+			<productItem :productName="item['Name']" :productPrice="item['Price']" :productSeller="item['User_id']" :productId="item['Product_id']" :credit="item['RATES']"></productItem>
+		</view>
+		<view v-if="!if_search_rates" v-for=" item in items" :key="'A'+item['Product_id']">
+			<productItem :productName="item['Name']" :productPrice="item['Price']" :productSeller="item['User_id']" :productId="item['Product_id']" :credit=10 :rangeType="item['PriceRange']"></productItem>
 		</view>
 		
 	</view>
@@ -72,8 +61,13 @@
 				item_levels:{},
 				search_content: 'furnace',
 				test :0,
-				arr:[]
-				
+				arr:[],
+				lowerB: 0,
+				upperB: 0,
+				lowerBArray: [0, 30, 60, 90, 120, 150],
+				higherBArray: [30, 60, 90, 120, 150, 9999999999],
+				if_search_rates: true,
+				if_search_range: false
 			}
 		},
 		onLoad() {
@@ -83,6 +77,8 @@
 		methods: {  
 			// function for submitting the user input 
 			getProduct() {
+				this.if_search_range = false;
+				this.if_search_rates = true;
 				uniCloud.callFunction({
 					name: 'query',
 					data: { 
@@ -105,7 +101,30 @@
 			navigate() {
 				 this.$router.push('/pages/product/create')
 			},
-	
+			getProductByRange() {
+				this.if_search_range = true;
+				this.if_search_rates = false;
+				console.log("the lower bound is: " + this.lowerBArray[this.lowerB]);
+				console.log("the upper bound is: " + this.higherBArray[this.upperB]);
+				uniCloud.callFunction({
+					name: 'query',
+					data: { 
+						// select tge products with the keywork input by the user
+						sentence: 'CALL Find_Price_In_Range(?, ?) ',
+						arguments: [this.lowerBArray[this.lowerB], this.higherBArray[this.upperB]] 
+					}, 
+					success: res=>{ 
+						
+						console.log("The getProductByRange() function is working!") 
+						console.log(res.result[0])
+						this.items = res.result[0]
+					}, 
+					fail: err=>{  
+						// jsonfy the error message
+						console.log(JSON.stringify(err))
+					} 
+				})
+			}
 		},
 		components: { 
 			productItem
@@ -239,6 +258,8 @@
   outline: none;
   padding: .75rem;
   text-decoration: none;
+  margin-left: 4px;
+  margin-top: -8px;
   transition: all 235ms ease-in-out;
   border-bottom-left-radius: 15px 255px;
   border-bottom-right-radius: 225px 15px;
