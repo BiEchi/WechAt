@@ -102,8 +102,9 @@ The main work concerns refracting the database schema into a NoSQL database (str
 
 We share a fair division of labor in the project. Jack is the captain, who is in charge of the whole process of the project. He is also the main developer of the **Post** and **Product** system. Puyu is the main developer of the **advanced database program** and **Bottle** page. He is very productive and helped with other team members a lot. Zhongqi is the main developer of the `Snippet`, which is a creative point of this project. She is also the main developer of the **Login** system. Jiayuan is the main developer of the **Chat_session** and **Msg** system, and he also contributes to writting the corrections of PT2 & PT3.
 
-
 # Corrections of PT2 & PT3
+
+Here are the corrections of the mistakes we made in PT2 and PT3. We sincerely thank you for reading all our mistakes again. All mistakes have been corrected in the `Proposal.md` (PT2) and `Database Desgin.md` (PT3), but we made a comprehensive copy here. You can check either of them.
 
 ## PT2
 
@@ -265,8 +266,6 @@ Successfully connected:
 ![image-20220803134233653](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-184234.png)
 
 Accessing tables and shown in terminal.
-
-**![image-20220802141855570](C:\Users\Einsgate\AppData\Roaming\Typora\typora-user-images\image-20220802141855570.png)**
 
 ### Problem 2:
 

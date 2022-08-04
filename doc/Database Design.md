@@ -14,8 +14,6 @@
 
 We have several databases with more than 1000 rows. Here are some of them:
 
-![image-20220803120000908](../../../../../../../Library/Application Support/typora-user-images/image-20220803120000908.png)
-
 ![image-20220803120007085](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-170007.png)
 
 ![image-20220803120017054](http://jacklovespictures.oss-cn-beijing.aliyuncs.com/2022-08-03-170017.png)
